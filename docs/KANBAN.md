@@ -1,8 +1,13 @@
-## To Do
-- [ ] създай package.json
-- [ ] създай src/index.js
-- [ ] създай tests/test.js
-- [ ] създай CI workflow
-## Doing
-## Done
-- [x] ai-roles.md
+KANBAN
+To Do
+ Добави /health endpoint който връща {"uptime": <секунди от старта>}
+Doing
+Done
+ ai-roles.md
+ VISION.md
+ KANBAN.md
+[x].gitignore
+ package.json
+ src/index.js (базов)
+ tests/test.js (базов)
+ CI workflow
