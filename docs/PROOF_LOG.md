@@ -18,3 +18,15 @@
 - template/node-express копиран успешно
 - PRODUCTS.md и ORDERS.md създадени
 
+
+
+## [2026-06-22] ЕТАП 1 – Създаден продукт demo-123
+- Резултат от npm test:
+```
+> TEMPLATE-NODE-EXPRESS@1.0.0 test
+> node tests/test.js
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Test server started on port 55968
+Test PASSED!
+```
