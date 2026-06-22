@@ -5,11 +5,13 @@ const path = require('path');
 const args = Object.fromEntries(process.argv.slice(2).map(a=>a.split('=').map((v,i)=>i===0?v.replace('--',''):v)));
 const mode = args.mode || 'vision';
 
-function createProduct(name) {
+function createProduct(name, template) {
   const target = path.join(__dirname, '..', name);
   console.log(`Creating ${name}...`);
   fs.mkdirSync(target, {recursive:true});
-  execSync(`xcopy "${__dirname}\\template\\node-express" "${target}" /E /I /Y`);
+  const templateName = template || 'site-basic';
+  const templatePath = path.join(__dirname, 'templates', templateName);
+  execSync(`xcopy "${templatePath}" "${target}" /E /I /Y`);
   
   const oldCwd = process.cwd();
   process.chdir(target);
@@ -37,7 +39,8 @@ function createProduct(name) {
 
 if(mode==='create'){
   const name = args.name;
-  createProduct(name);
+  const template = args.template;
+  createProduct(name, template);
   process.exit(0);
 }
 
@@ -51,11 +54,13 @@ if(mode==='process-orders'){
   const lines = ordersContent.split(/\r?\n/);
   let orderIndex = -1;
   let productName = '';
+  let templateName = '';
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].match(/-\s*\[\s*\]/)) {
-      const match = lines[i].match(/-\s*\[\s*\]\s*Създай продукт\s+([a-zA-Z0-9-_]+)/);
+      const match = lines[i].match(/-\s*\[\s*\]\s*Създай продукт\s+([a-zA-Z0-9-_]+)(?:\s+--template=([a-zA-Z0-9-_]+))?/);
       if (match) {
         productName = match[1];
+        templateName = match[2] || '';
         orderIndex = i;
         break;
       }
@@ -67,9 +72,9 @@ if(mode==='process-orders'){
     process.exit(0);
   }
 
-  console.log(`Found order for product: ${productName}`);
+  console.log(`Found order for product: ${productName}${templateName ? ` with template: ${templateName}` : ''}`);
   try {
-    const testOutput = createProduct(productName);
+    const testOutput = createProduct(productName, templateName);
     
     // Смени "- [ ]" на "- [x]" в ORDERS.md
     lines[orderIndex] = lines[orderIndex].replace(/-\s*\[\s*\]/, '- [x]');

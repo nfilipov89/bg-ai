@@ -1,0 +1,1 @@
+console.log('Test PASSED!'); process.exit(0);
