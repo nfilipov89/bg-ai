@@ -2,7 +2,7 @@
 
 ## ЕТАП 1
 - [x] Точка 1.3 – VISION.md
-- [ ] Точка 1.4 – KANBAN.md
+- [x] Точка 1.4 – KANBAN.md
 - [ ] Точка 1.5 – .gitignore
 - [ ] Точка 1.6 – Първи commit
 
