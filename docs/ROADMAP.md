@@ -4,7 +4,7 @@
 - [x] Точка 1.3 – VISION.md
 - [x] Точка 1.4 – KANBAN.md
 - [x] Точка 1.5 – .gitignore
-- [ ] Точка 1.6 – Първи commit
+- [x] Точка 1.6 – Първи commit
 
 ## ЕТАП 2
 - [ ] Точка 2.1 – package.json
