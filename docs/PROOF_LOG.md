@@ -33,3 +33,13 @@
 Test server started on port 55968
 Test PASSED!
 ```
+
+
+## [2026-06-22] ЕТАП 1 – Създаден продукт sliven-shop
+- Резултат от npm test:
+```
+> eshop-basic@1.0.0 test
+> node tests/test.js
+
+Test PASSED!
+```
