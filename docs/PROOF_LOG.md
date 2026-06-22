@@ -12,3 +12,9 @@
 - Run: node brain.js
 - Output: Изпращам към LM Studio... === ОТГОВОР ОТ DEEPSEEK === Първата задача според VISION.md е: Създаване на "Hello World API"...
 - LM Studio: http://127.0.0.1:1234 – Running
+
+## [2026-06-23] ЕТАП 0 – Фабриката може да създава
+- brain.js --mode=create → CREATED test-product
+- template/node-express копиран успешно
+- PRODUCTS.md и ORDERS.md създадени
+
