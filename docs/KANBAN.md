@@ -1,8 +1,8 @@
 KANBAN
 To Do
- Добави /health endpoint който връща {"uptime": <секунди от старта>}
 Doing
 Done
+ [x] Добави /health endpoint който връща {"uptime": <секунди от старта>}
  ai-roles.md
  VISION.md
  KANBAN.md
