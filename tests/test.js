@@ -1,35 +1,49 @@
 const http = require('http');
-const server = require('../src/index.js');
+const app = require('../src/index.js');
 
-const PORT = 3000;
-
-function makeRequest(path) {
+function makeRequest(port, path, options = {}) {
   return new Promise((resolve, reject) => {
-    http.get(`http://localhost:${PORT}${path}`, (res) => {
+    const req = http.request(`http://localhost:${port}${path}`, options, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve({ res, data }));
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    if (options.body) {
+      req.write(options.body);
+    }
+    req.end();
   });
 }
 
-server.listen(PORT, async () => {
-  console.log(`Test server started on port ${PORT}`);
+const server = app.listen(0, async () => {
+  const port = server.address().port;
+  console.log(`Test server started on port ${port}`);
 
   try {
     // Test default endpoint
-    let { res, data } = await makeRequest('/');
-    console.log(`Received response for /: ${data}`);
+    let { res, data } = await makeRequest(port, '/');
     let parsed = JSON.parse(data);
-    if (res.statusCode !== 200) throw new Error(`Expected status code 200, got ${res.statusCode}`);
-    if (parsed.status !== 'ok') throw new Error(`Expected JSON status 'ok', got '${parsed.status}'`);
+    if (res.statusCode !== 200) throw new Error(`Expected 200, got ${res.statusCode}`);
+    if (parsed.status !== 'ok') throw new Error(`Expected ok, got ${parsed.status}`);
 
     // Test health endpoint
-    let healthResp = await makeRequest('/health');
-    console.log(`Received response for /health: ${healthResp.data}`);
+    let healthResp = await makeRequest(port, '/health');
     let healthParsed = JSON.parse(healthResp.data);
-    if (healthResp.res.statusCode !== 200) throw new Error(`Expected status code 200 for /health, got ${healthResp.res.statusCode}`);
-    if (typeof healthParsed.uptime !== 'number') throw new Error(`Expected JSON uptime to be a number, got '${typeof healthParsed.uptime}'`);
+    if (healthResp.res.statusCode !== 200) throw new Error(`Expected 200, got ${healthResp.res.statusCode}`);
+    if (typeof healthParsed.uptime !== 'number') throw new Error('Expected uptime to be a number');
+
+    // Test POST /ai/echo
+    let echoResp = await makeRequest(port, '/ai/echo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: 'test' })
+    });
+    let echoParsed = JSON.parse(echoResp.data);
+    if (echoResp.res.statusCode !== 200) throw new Error(`Expected 200, got ${echoResp.res.statusCode}`);
+    if (echoParsed.echo !== 'test') throw new Error(`Expected echo 'test', got '${echoParsed.echo}'`);
 
     console.log('Test PASSED!');
     server.close(() => process.exit(0));

@@ -1,23 +1,28 @@
-const http = require('http');
+const express = require('express');
+const app = express();
 
 const PORT = 3000;
 const startTime = Date.now();
 
-const server = http.createServer((req, res) => {
-  if (req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ uptime: Math.floor((Date.now() - startTime) / 1000) }));
-    return;
-  }
+app.use(express.json());
 
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ status: 'ok' }));
+app.get('/health', (req, res) => {
+  res.json({ uptime: Math.floor((Date.now() - startTime) / 1000) });
+});
+
+app.get('/', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+app.post('/ai/echo', (req, res) => {
+  const text = req.body.text;
+  res.json({ echo: text });
 });
 
 if (require.main === module) {
-  server.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 }
 
-module.exports = server;
+module.exports = app;
