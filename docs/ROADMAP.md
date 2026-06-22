@@ -1,6 +1,7 @@
 # BG-AI ROADMAP
 
 ## ✅ ЕТАП 0 – ОСНОВА (ГОТОВ)
+
 - [x] Node.js + Express сървър
 - [x] Endpoints: /, /health, /ai/echo, /ai/chat
 - [x] .env + LM Studio връзка
@@ -11,6 +12,7 @@
 Доказателство: PROOF_LOG.md #0
 
 ## 🔄 ЕТАП 1 – АВТОНОМЕН PM (В ПРОЦЕС)
+
 - [ ] brain.js --mode=pm чете KANBAN.md
 - [ ] вади първа To Do задача
 - [ ] генерира PLAN.md
@@ -18,6 +20,9 @@
 - [ ] git commit
 
 ## ⏳ ЕТАП 2 – Dev агент
+
 ## ⏳ ЕТАП 3 – QA агент
+
 ## ⏳ ЕТАП 4 – Пълен цикъл
+
 ## ⏳ ЕТАП 5 – Многопроектна фабрика
