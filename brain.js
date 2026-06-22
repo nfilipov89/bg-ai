@@ -8,9 +8,18 @@ const mode = args.mode || 'vision';
 if(mode==='create'){
   const name = args.name;
   const target = path.join(__dirname, '..', name);
+  console.log(`Creating ${name}...`);
   fs.mkdirSync(target, {recursive:true});
   execSync(`xcopy "${__dirname}\\template\\node-express" "${target}" /E /I /Y`);
-  console.log(`CREATED ${target}`);
+  process.chdir(target);
+  execSync('git init');
+  execSync('npm install');
+  execSync('npm test');
+  try { execSync(`gh repo create ${name} --public --source=. --remote=origin --push`); } catch(e){ console.log('GitHub repo exists or gh not logged'); }
+  // запиши в PRODUCTS.md
+  const productsPath = path.join(__dirname, 'docs', 'PRODUCTS.md');
+  fs.appendFileSync(productsPath, `\n| ${name} | ${target} | https://github.com/nfilipov89/${name} | active | ${new Date().toISOString().split('T')[0]} |`);
+  console.log(`DONE ${name}`);
   process.exit(0);
 }
 
