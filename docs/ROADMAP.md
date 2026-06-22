@@ -1,17 +1,23 @@
-# ROADMAP
+# BG-AI ROADMAP
 
-## ЕТАП 1
-- [x] Точка 1.3 – VISION.md
-- [x] Точка 1.4 – KANBAN.md
-- [x] Точка 1.5 – .gitignore
-- [x] Точка 1.6 – Първи commit
+## ✅ ЕТАП 0 – ОСНОВА (ГОТОВ)
+- [x] Node.js + Express сървър
+- [x] Endpoints: /, /health, /ai/echo, /ai/chat
+- [x] .env + LM Studio връзка
+- [x] tests/test.js + npm test
+- [x] GitHub CI зелен
+- [x] brain.js v0.1 – чете VISION.md и говори с DeepSeek
 
-## ЕТАП 2
-- [x] Точка 2.1 – package.json
-- [x] Точка 2.2 – src/index.js
-- [x] Точка 2.3 – Ръчен тест
+Доказателство: PROOF_LOG.md #0
 
-## ЕТАП 3
-- [x] Точка 3.1 – tests/test.js
-- [x] Точка 3.2 – npm test
-- [x] Точка 3.3 – CI
+## 🔄 ЕТАП 1 – АВТОНОМЕН PM (В ПРОЦЕС)
+- [ ] brain.js --mode=pm чете KANBAN.md
+- [ ] вади първа To Do задача
+- [ ] генерира PLAN.md
+- [ ] мести задача в Doing
+- [ ] git commit
+
+## ⏳ ЕТАП 2 – Dev агент
+## ⏳ ЕТАП 3 – QA агент
+## ⏳ ЕТАП 4 – Пълен цикъл
+## ⏳ ЕТАП 5 – Многопроектна фабрика
