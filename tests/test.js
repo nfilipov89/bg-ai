@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 const http = require('http');
 const app = require('../src/index.js');
 
@@ -33,17 +34,17 @@ const server = app.listen(0, async () => {
     if (healthResp.res.statusCode !== 200) throw new Error(`Expected 200, got ${healthResp.res.statusCode}`);
     if (typeof healthParsed.uptime !== 'number') throw new Error('Expected uptime to be a number');
 
-    // Test POST /ai/echo
-    let echoResp = await makeRequest(port, '/ai/echo', {
+    // Test POST /ai/chat
+    let chatResp = await makeRequest(port, '/ai/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ text: 'test' })
+      body: JSON.stringify({ message: 'test' })
     });
-    let echoParsed = JSON.parse(echoResp.data);
-    if (echoResp.res.statusCode !== 200) throw new Error(`Expected 200, got ${echoResp.res.statusCode}`);
-    if (echoParsed.echo !== 'test') throw new Error(`Expected echo 'test', got '${echoParsed.echo}'`);
+    let chatParsed = JSON.parse(chatResp.data);
+    if (chatResp.res.statusCode !== 200) throw new Error(`Expected 200, got ${chatResp.res.statusCode}`);
+    if (!chatParsed.reply.includes('test')) throw new Error(`Expected reply to contain 'test', got '${chatParsed.reply}'`);
 
     console.log('Test PASSED!');
     server.close(() => process.exit(0));
