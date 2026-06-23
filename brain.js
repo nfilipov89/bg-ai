@@ -67,8 +67,8 @@ if (process.argv.includes('--mode=pm')) {
     process.exit(1);
   });
 
-  // Set timeout of 10 seconds
-  req.setTimeout(10000, () => {
+  // Set timeout of 5 minutes
+  req.setTimeout(300000, () => {
     req.destroy();
   });
 
