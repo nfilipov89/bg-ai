@@ -1,10 +1,9 @@
 # KANBAN
 
 ## To Do
-
+- Добави Stripe плащане в eshop-basic
 
 ## Doing
-- Добави Stripe плащане в eshop-basic
 
 ## Done
 - Настрой Vercel деплой
