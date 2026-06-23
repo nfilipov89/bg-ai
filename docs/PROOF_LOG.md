@@ -65,3 +65,14 @@ Test PASSED!
 
 Test PASSED!
 ```
+
+
+## [2026-06-23] ЕТАП 1 – Създаден продукт sliven-shop
+- Vercel URL: https://sliven-shop-jzfs8o5po-opitomiai-6111s-projects.vercel.app
+- Резултат от npm test:
+```
+> eshop-basic@1.0.0 test
+> node tests/test.js
+
+Test PASSED!
+```
