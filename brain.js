@@ -27,16 +27,19 @@ function createProduct(name, template) {
     }
   }
   
-  // Генериране на vercel.json
-  const vercelJson = {
-    rewrites: [
-      {
-        source: "/(.*)",
-        destination: "/public/$1"
-      }
-    ]
-  };
-  fs.writeFileSync(path.join(target, 'vercel.json'), JSON.stringify(vercelJson, null, 2));
+  // Генериране на vercel.json, ако не съществува в шаблона
+  const targetVercelJsonPath = path.join(target, 'vercel.json');
+  if (!fs.existsSync(targetVercelJsonPath)) {
+    const vercelJson = {
+      rewrites: [
+        {
+          source: "/(.*)",
+          destination: "/public/$1"
+        }
+      ]
+    };
+    fs.writeFileSync(targetVercelJsonPath, JSON.stringify(vercelJson, null, 2));
+  }
 
   // Добавяне на .vercel към .gitignore
   const gitignorePath = path.join(target, '.gitignore');
