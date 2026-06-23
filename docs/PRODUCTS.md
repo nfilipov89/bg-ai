@@ -9,3 +9,4 @@
 | vercel-shop-test | C:\Users\Dari\Desktop\vercel-shop-test | https://github.com/nfilipov89/vercel-shop-test | https://vercel-shop-test-pjz8ug8ju-opitomiai-6111s-projects.vercel.app | active | 2026-06-23 |
 | sliven-shop | C:\Users\Dari\Desktop\sliven-shop | https://github.com/nfilipov89/sliven-shop | https://sliven-shop-hqgsr379g-opitomiai-6111s-projects.vercel.app | active | 2026-06-23 |
 | sliven-shop | C:\Users\Dari\Desktop\sliven-shop | https://github.com/nfilipov89/sliven-shop | https://sliven-shop-jzfs8o5po-opitomiai-6111s-projects.vercel.app | active | 2026-06-23 |
+| sliven-shop | C:\Users\Dari\Desktop\sliven-shop | https://github.com/nfilipov89/sliven-shop | https://sliven-shop-pbaibq6bw-opitomiai-6111s-projects.vercel.app | active | 2026-06-23 |
