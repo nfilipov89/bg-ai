@@ -29,17 +29,10 @@ function createProduct(name, template) {
   
   // Генериране на vercel.json
   const vercelJson = {
-    version: 2,
-    builds: [
+    rewrites: [
       {
-        src: entryPoint,
-        use: "@vercel/node"
-      }
-    ],
-    routes: [
-      {
-        src: "/(.*)",
-        dest: entryPoint
+        source: "/(.*)",
+        destination: "/public/$1"
       }
     ]
   };
