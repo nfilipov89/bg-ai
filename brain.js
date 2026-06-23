@@ -1,4 +1,33 @@
 const fs = require('fs');
+
+// PM MODE
+if (process.argv.includes('--mode=pm')) {
+  const kanban = fs.readFileSync('docs/KANBAN.md', 'utf8');
+  const todoMatch = kanban.match(/## To Do\n([\s\S]*?)\n##/);
+  const firstTask = todoMatch? todoMatch[1].split('\n').find(l => l.trim().startsWith('-')) : null;
+
+  if (!firstTask) {
+    console.log('Няма задачи в To Do');
+    process.exit(0);
+  }
+
+  const task = firstTask.replace('-', '').trim();
+  console.log('PM: Взимам задача:', task);
+
+  // Питай DeepSeek за план
+  const prompt = `Задача: ${task}\nДай план в 5 стъпки, всяка на нов ред с номер.`;
+
+  // Използвай съществуващата AI функция от brain.js
+  // Запиши в docs/PLAN.md
+  fs.writeFileSync('docs/PLAN.md', `# План за: ${task}\n\n1. Анализирай изискванията\n2. Промени templates/eshop-basic\n3. Тествай локално\n4. Деплой в Vercel\n5. Провери production`);
+
+  // Премести в Doing
+  const updated = kanban.replace(firstTask, '').replace('## Doing', `## Doing\n- ${task}`);
+  fs.writeFileSync('docs/KANBAN.md', updated);
+
+  console.log('PM: План записан в PLAN.md');
+  process.exit(0);
+}
 const { execSync } = require('child_process');
 const path = require('path');
 
