@@ -11,30 +11,104 @@ function createProduct(name, template) {
   fs.mkdirSync(target, {recursive:true});
   const templateName = template || 'site-basic';
   const templatePath = path.join(__dirname, 'templates', templateName);
-  execSync(`xcopy "${templatePath}" "${target}" /E /I /Y`);
+  execSync(`xcopy "${templatePath}" "${target}" /E /I /Y`, { stdio: 'inherit' });
   
+  // Определяне на главния файл (entrypoint) за vercel.json
+  const packageJsonPath = path.join(target, 'package.json');
+  let entryPoint = 'server.js';
+  if (fs.existsSync(packageJsonPath)) {
+    try {
+      const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      if (pkg.main) {
+        entryPoint = pkg.main;
+      }
+    } catch (e) {
+      console.error('Failed to parse package.json main field:', e.message);
+    }
+  }
+  
+  // Генериране на vercel.json
+  const vercelJson = {
+    version: 2,
+    builds: [
+      {
+        src: entryPoint,
+        use: "@vercel/node"
+      }
+    ],
+    routes: [
+      {
+        src: "/(.*)",
+        dest: entryPoint
+      }
+    ]
+  };
+  fs.writeFileSync(path.join(target, 'vercel.json'), JSON.stringify(vercelJson, null, 2));
+
+  // Добавяне на .vercel към .gitignore
+  const gitignorePath = path.join(target, '.gitignore');
+  if (fs.existsSync(gitignorePath)) {
+    let gitignoreContent = fs.readFileSync(gitignorePath, 'utf8');
+    if (!gitignoreContent.includes('.vercel')) {
+      fs.appendFileSync(gitignorePath, '\n.vercel\n.vercel/\n');
+    }
+  } else {
+    fs.writeFileSync(gitignorePath, 'node_modules/\n.env\n.vercel\n.vercel/\n');
+  }
+
   const oldCwd = process.cwd();
   process.chdir(target);
   
   let testOutput = '';
+  let vercelUrl = '';
   try {
-    execSync('git init');
-    execSync('npm install');
-    testOutput = execSync('npm test', { encoding: 'utf8' });
-    try { 
-      execSync(`gh repo create ${name} --public --source=. --remote=origin --push`); 
-    } catch(e){ 
-      console.log('GitHub repo exists or gh not logged'); 
+    execSync('git init', { stdio: 'inherit' });
+    execSync('git add .', { stdio: 'inherit' });
+    try {
+      execSync('git commit -m "feat: initial commit from factory"', { stdio: 'inherit' });
+    } catch(e) {
+      // commit might fail if no changes or git not configured
     }
+
+    execSync('npm install', { stdio: 'inherit' });
+    testOutput = execSync('npm test', { encoding: 'utf8' });
+    
+    try { 
+      execSync(`gh repo create ${name} --public --source=. --remote=origin --push`, { stdio: 'inherit' }); 
+    } catch(e){ 
+      console.log('GitHub repo exists or gh not logged, trying to push to existing');
+      try {
+        execSync('git push -u origin master', { stdio: 'inherit' });
+      } catch(pe) {
+        console.log('Push to existing failed:', pe.message);
+      }
+    }
+
+    console.log('Linking project to Vercel...');
+    execSync('npx vercel link --yes', { stdio: 'inherit' });
+
+    try {
+      console.log('Connecting Vercel project to Git...');
+      execSync(`npx vercel git connect https://github.com/nfilipov89/${name} --yes`, { stdio: 'inherit' });
+    } catch(ge) {
+      console.log('Failed to connect Vercel project to Git (GitHub repo may not exist):', ge.message);
+    }
+
+    console.log('Deploying to Vercel production...');
+    const deployOut = execSync('npx vercel deploy --prod --yes', { encoding: 'utf8' });
+    console.log(deployOut);
+    
+    const vercelUrlMatch = deployOut.match(/https:\/\/[a-zA-Z0-9-_]+\.vercel\.app/);
+    vercelUrl = vercelUrlMatch ? vercelUrlMatch[0] : '';
   } finally {
     process.chdir(oldCwd);
   }
   
   // запиши в PRODUCTS.md
   const productsPath = path.join(__dirname, 'docs', 'PRODUCTS.md');
-  fs.appendFileSync(productsPath, `\n| ${name} | ${target} | https://github.com/nfilipov89/${name} | active | ${new Date().toISOString().split('T')[0]} |`);
+  fs.appendFileSync(productsPath, `\n| ${name} | ${target} | https://github.com/nfilipov89/${name} | ${vercelUrl || 'N/A'} | active | ${new Date().toISOString().split('T')[0]} |`);
   console.log(`DONE ${name}`);
-  return testOutput;
+  return { testOutput, vercelUrl };
 }
 
 if(mode==='create'){
@@ -51,39 +125,41 @@ if(mode==='process-orders'){
     process.exit(1);
   }
   const ordersContent = fs.readFileSync(ordersPath, 'utf8');
-  const lines = ordersContent.split(/\r?\n/);
-  let orderIndex = -1;
-  let productName = '';
-  let templateName = '';
-  for (let i = 0; i < lines.length; i++) {
-    if (lines[i].match(/-\s*\[\s*\]/)) {
-      const match = lines[i].match(/-\s*\[\s*\]\s*Създай продукт\s+([a-zA-Z0-9-_]+)(?:\s+--template=([a-zA-Z0-9-_]+))?/);
-      if (match) {
-        productName = match[1];
-        templateName = match[2] || '';
-        orderIndex = i;
-        break;
-      }
-    }
+  
+  const nameMatch = ordersContent.match(/Име:\s*([a-zA-Z0-9-_]+)/);
+  const templateMatch = ordersContent.match(/Темплейт:\s*([a-zA-Z0-9-_]+)/);
+  const urlLineMatch = ordersContent.match(/ти получаваш линк\s+(https:[^\r\n]*)/);
+
+  if (!nameMatch || !nameMatch[1]) {
+    console.log('No pending orders (name is empty).');
+    process.exit(0);
   }
 
-  if (orderIndex === -1) {
-    console.log('No pending orders found.');
+  const productName = nameMatch[1];
+  const templateName = templateMatch ? templateMatch[1] : '';
+  const currentUrl = urlLineMatch ? urlLineMatch[1].trim() : '';
+
+  // Проверяваме дали поръчката е вече обработена:
+  if (currentUrl && !currentUrl.includes('    ') && currentUrl !== 'https:.vercel.app') {
+    console.log(`Order for ${productName} already processed (Vercel URL: ${currentUrl}).`);
     process.exit(0);
   }
 
   console.log(`Found order for product: ${productName}${templateName ? ` with template: ${templateName}` : ''}`);
   try {
-    const testOutput = createProduct(productName, templateName);
+    const { testOutput, vercelUrl } = createProduct(productName, templateName);
     
-    // Смени "- [ ]" на "- [x]" в ORDERS.md
-    lines[orderIndex] = lines[orderIndex].replace(/-\s*\[\s*\]/, '- [x]');
-    fs.writeFileSync(ordersPath, lines.join('\n'));
+    // Обнови ORDERS.md с новия Vercel URL
+    let updatedContent = ordersContent.replace(
+      /ти получаваш линк\s+https:[^\r\n]*/,
+      `ти получаваш линк ${vercelUrl || 'https://' + productName + '.vercel.app'}`
+    );
+    fs.writeFileSync(ordersPath, updatedContent, 'utf8');
 
     // Запиши в docs/PROOF_LOG.md
     const proofPath = path.join(__dirname, 'docs', 'PROOF_LOG.md');
     const today = new Date().toISOString().split('T')[0];
-    const proofEntry = `\n\n## [${today}] ЕТАП 1 – Създаден продукт ${productName}\n- Резултат от npm test:\n\`\`\`\n${testOutput.trim()}\n\`\`\`\n`;
+    const proofEntry = `\n\n## [${today}] ЕТАП 1 – Създаден продукт ${productName}\n- Vercel URL: ${vercelUrl}\n- Резултат от npm test:\n\`\`\`\n${testOutput.trim()}\n\`\`\`\n`;
     fs.appendFileSync(proofPath, proofEntry);
 
     // git add docs/ && git commit
