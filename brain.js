@@ -76,6 +76,7 @@ if (process.argv.includes('--mode=pm')) {
   });
 
   req.write(data);
+  console.log('PM: Чакам LM Studio... (може да отнеме 2-5 минути за R1)');
   req.end();
 }
 const { execSync } = require('child_process');
