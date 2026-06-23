@@ -43,3 +43,14 @@ Test PASSED!
 
 Test PASSED!
 ```
+
+
+## [2026-06-23] ЕТАП 1 – Създаден продукт vercel-shop-test
+- Vercel URL: https://vercel-shop-test-pjz8ug8ju-opitomiai-6111s-projects.vercel.app
+- Резултат от npm test:
+```
+> eshop-basic@1.0.0 test
+> node tests/test.js
+
+Test PASSED!
+```
