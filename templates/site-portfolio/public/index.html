@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-zinc-950 text-zinc-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURELIA — Fine Art & Editorial Photography</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500;650&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+            serif: ['Cinzel', 'serif'],
+          },
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+  
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="font-sans antialiased bg-zinc-950 overflow-x-hidden">
+
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-40 bg-zinc-950/70 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+      <a href="#" class="font-serif text-2xl tracking-[0.2em] text-white hover:text-zinc-400 transition-colors">
+        AURELIA
+      </a>
+      
+      <div class="hidden md:flex space-x-12 text-xs tracking-[0.25em] uppercase text-zinc-400">
+        <a href="#gallery" class="hover:text-white transition-colors">Gallery</a>
+        <a href="#heritage" class="hover:text-white transition-colors">Heritage</a>
+        <a href="#booking" class="hover:text-white transition-colors">Book Session</a>
+      </div>
+      
+      <a href="#booking" class="border border-white/20 text-white font-medium hover:bg-white hover:text-black transition-all text-xs tracking-widest uppercase py-3 px-6">
+        Reserve
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center relative pt-24">
+    <div class="absolute inset-0 bg-black/45 z-10"></div>
+    <div class="absolute inset-0 z-0">
+      <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1600&auto=format&fit=crop" alt="Hero Photography" class="w-full h-full object-cover">
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-6 w-full text-center relative z-20 space-y-6">
+      <span class="text-xs tracking-[0.4em] uppercase text-zinc-300 block">Fine Art & Editorial Portfolio</span>
+      <h1 class="font-serif text-5xl md:text-8xl leading-none text-white tracking-widest">
+        CAPTURING <br>
+        <span class="italic font-light text-zinc-300">SILENT LIGHT</span>
+      </h1>
+      <div class="w-20 h-[1px] bg-white mx-auto my-8"></div>
+      <p class="text-zinc-300 text-sm md:text-base font-light max-w-xl mx-auto leading-relaxed tracking-wider">
+        Based in Sofia, documenting human emotion, fashion aesthetics, and raw natural geometry through medium format analogue photography.
+      </p>
+      <div class="pt-6">
+        <a href="#gallery" class="text-xs uppercase tracking-[0.3em] text-white hover:text-zinc-400 transition-colors">
+          View Gallery <i class="fa-solid fa-arrow-down ml-2 animate-bounce"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="py-24 border-t border-white/5 bg-zinc-950">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        <div>
+          <span class="text-xs tracking-[0.3em] uppercase text-zinc-500 block mb-2">Portfolio</span>
+          <h2 class="font-serif text-3xl md:text-5xl text-white">Visual Stories</h2>
+        </div>
+        
+        <!-- Category Filters -->
+        <div class="flex flex-wrap gap-4 text-xs tracking-widest uppercase text-zinc-400 font-medium">
+          <button onclick="filterGallery('all')" class="gallery-filter-btn active text-white">All</button>
+          <button onclick="filterGallery('portrait')" class="gallery-filter-btn">Portraits</button>
+          <button onclick="filterGallery('fashion')" class="gallery-filter-btn">Fashion</button>
+          <button onclick="filterGallery('fine-art')" class="gallery-filter-btn">Fine Art</button>
+        </div>
+      </div>
+      
+      <!-- Interactive Masonry-like Grid -->
+      <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Gallery Items will be injected dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Heritage Section -->
+  <section id="heritage" class="py-24 border-t border-white/5 bg-black relative">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="space-y-6">
+        <span class="text-xs tracking-[0.3em] uppercase text-zinc-500">About the Artist</span>
+        <h2 class="font-serif text-3xl md:text-5xl text-white">Aurelia Vance</h2>
+        <p class="text-zinc-400 text-sm font-light leading-relaxed">
+          For over a decade, Aurelia has collaborated with international publications, high-end fashion designers, and local galleries to portray visual statements. Inspired by minimalism, architectural shapes, and daylight shadows, every photo session is designed as a custom piece of art.
+        </p>
+        <p class="text-zinc-400 text-sm font-light leading-relaxed">
+          Utilizing medium format cameras, each shot is chosen intentionally, focusing on authentic expression, depth, and gold-hued natural illumination.
+        </p>
+      </div>
+      <div class="relative">
+        <div class="border border-white/10 p-4 bg-zinc-950">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" alt="Aurelia Vance Portrait" class="w-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Section -->
+  <section id="booking" class="py-24 border-t border-white/5 bg-zinc-950 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-xl mx-auto mb-16 space-y-4">
+        <span class="text-xs tracking-[0.3em] uppercase text-zinc-500">Collaborate</span>
+        <h2 class="font-serif text-3xl md:text-5xl text-white">Reserve a Session</h2>
+        <div class="w-12 h-[1px] bg-white mx-auto mt-4"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <!-- Service 1 -->
+        <div class="border border-white/5 p-8 bg-black flex flex-col justify-between hover:border-white/20 transition-all group">
+          <div class="space-y-6">
+            <h3 class="font-serif text-xl text-white">Editorial Session</h3>
+            <p class="text-zinc-400 text-xs font-light leading-relaxed">Full day shoot, styling consultation, 30 high-res hand-retouched medium format prints.</p>
+            <div class="border-t border-white/5 pt-4">
+              <span class="font-serif text-2xl text-white">450.00 BGN</span>
+            </div>
+          </div>
+          <button onclick="bookSession('Editorial Session', 450.00)" class="w-full mt-8 border border-white/20 hover:bg-white hover:text-black text-white py-3 text-xs uppercase tracking-widest transition-all">
+            Book Editorial
+          </button>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="border border-white/5 p-8 bg-black flex flex-col justify-between hover:border-white/20 transition-all group">
+          <div class="space-y-6">
+            <h3 class="font-serif text-xl text-white">Fine-Art Portrait</h3>
+            <p class="text-zinc-400 text-xs font-light leading-relaxed">2-hour intimate session in our daylight studio. Includes 10 signed museum-grade prints.</p>
+            <div class="border-t border-white/5 pt-4">
+              <span class="font-serif text-2xl text-white">250.00 BGN</span>
+            </div>
+          </div>
+          <button onclick="bookSession('Fine-Art Portrait', 250.00)" class="w-full mt-8 border border-white/20 hover:bg-white hover:text-black text-white py-3 text-xs uppercase tracking-widest transition-all">
+            Book Portrait
+          </button>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="border border-white/5 p-8 bg-black flex flex-col justify-between hover:border-white/20 transition-all group">
+          <div class="space-y-6">
+            <h3 class="font-serif text-xl text-white">Bespoke Project</h3>
+            <p class="text-zinc-400 text-xs font-light leading-relaxed">Custom commercial or artistic campaign with art direction and location Scouting.</p>
+            <div class="border-t border-white/5 pt-4">
+              <span class="font-serif text-2xl text-white">950.00 BGN</span>
+            </div>
+          </div>
+          <button onclick="bookSession('Bespoke Project', 950.00)" class="w-full mt-8 border border-white/20 hover:bg-white hover:text-black text-white py-3 text-xs uppercase tracking-widest transition-all">
+            Book Bespoke
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout Drawer Modal -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div onclick="closeCheckout()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+    
+    <!-- Modal Card -->
+    <div class="relative w-full max-w-lg bg-zinc-950 border border-white/10 p-8 rounded-none shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeCheckout()" class="absolute top-5 right-5 text-zinc-400 hover:text-white transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      
+      <h3 class="font-serif text-2xl text-center text-white mb-1">Confirm Session</h3>
+      <p id="selected-service-name" class="text-xs text-zinc-400 text-center uppercase tracking-widest mb-6">Service Name</p>
+      
+      <!-- Amount container -->
+      <div class="mb-6 p-4 bg-black border border-white/5 space-y-1">
+        <div class="flex justify-between items-baseline">
+          <span class="text-xs uppercase tracking-wider text-zinc-400">Total Due</span>
+          <span id="modal-amount" class="text-white font-bold text-lg font-serif">0.00 BGN</span>
+        </div>
+      </div>
+      
+      <!-- Payment Form -->
+      <form id="payment-form" class="space-y-6">
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest text-zinc-400 mb-2 font-bold">Secure Card Details</label>
+          <div id="payment-element" class="p-4 bg-zinc-900 border border-white/10">
+            <!-- Stripe Payment Element Mount -->
+          </div>
+        </div>
+        
+        <div id="error-message" class="text-red-400 text-xs font-light text-center hidden"></div>
+        
+        <button id="pay-button" type="submit" class="w-full bg-white text-black font-semibold py-4 text-xs uppercase tracking-widest transition-all flex items-center justify-center hover:bg-zinc-200">
+          <span id="pay-text">Confirm Booking</span>
+          <div id="pay-spinner" class="hidden w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin ml-2"></div>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
+    <div class="relative w-full max-w-md bg-zinc-950 border border-white/15 p-12 text-center z-10">
+      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
+        <i class="fa-solid fa-check text-2xl text-black"></i>
+      </div>
+      <h3 class="font-serif text-3xl text-white mb-3">Booking Confirmed</h3>
+      <p class="text-zinc-400 text-sm font-light leading-relaxed mb-8">
+        Your booking session has been successfully processed and secure retainer paid. Aurelia will contact you shortly to coordinate scheduling and style directions.
+      </p>
+      <button onclick="closeSuccess()" class="border border-white/20 text-white font-semibold py-4 px-12 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+        Back to Gallery
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="py-16 border-t border-white/5 text-center text-xs tracking-[0.2em] uppercase text-zinc-500 space-y-6">
+    <p class="font-serif text-xl tracking-[0.3em] text-white">AURELIA</p>
+    <p>&copy; 2026 AURELIA. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let stripe, elements, paymentElement;
+    let selectedService = { name: '', amount: 0 };
+
+    const galleryData = [
+      { id: 1, category: 'fashion', image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop', title: 'Velvet Noir' },
+      { id: 2, category: 'portrait', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop', title: 'Seraphina' },
+      { id: 3, category: 'fine-art', image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=600&auto=format&fit=crop', title: 'Sinking Light' },
+      { id: 4, category: 'fashion', image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=600&auto=format&fit=crop', title: 'Architectural Shadows' },
+      { id: 5, category: 'portrait', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop', title: 'Bespoke Line' },
+      { id: 6, category: 'fine-art', image: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?q=80&w=600&auto=format&fit=crop', title: 'Sofia Monologue' }
+    ];
+
+    // Render Gallery
+    function renderGallery(filter = 'all') {
+      const grid = document.getElementById('gallery-grid');
+      const filtered = filter === 'all' ? galleryData : galleryData.filter(item => item.category === filter);
+      
+      grid.innerHTML = filtered.map(item => `
+        <div class="group relative overflow-hidden bg-zinc-900 border border-white/5 aspect-[3/4] transition-all duration-500">
+          <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-750 group-hover:scale-105">
+          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 z-10">
+            <span class="text-[10px] tracking-widest uppercase text-zinc-400 mb-1">${item.category}</span>
+            <h4 class="font-serif text-lg text-white">${item.title}</h4>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterGallery(category) {
+      document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+        btn.classList.remove('text-white', 'active');
+      });
+      event.target.classList.add('text-white', 'active');
+      renderGallery(category);
+    }
+
+    // Initialize gallery
+    renderGallery();
+
+    async function bookSession(name, amount) {
+      selectedService = { name, amount };
+      
+      document.getElementById('selected-service-name').textContent = name;
+      document.getElementById('modal-amount').textContent = `${amount.toFixed(2)} BGN`;
+
+      // Open Checkout Modal
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      // Initialize Stripe Elements
+      const resConfig = await fetch('/api/config');
+      const { publishableKey } = await resConfig.json();
+      
+      if (!stripe) {
+        stripe = Stripe(publishableKey);
+      }
+
+      const resIntent = await fetch('/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: amount, serviceName: name })
+      });
+      const { clientSecret } = await resIntent.json();
+
+      if (clientSecret.startsWith('mock_')) {
+        // Stripe mock mode
+        document.getElementById('payment-element').innerHTML = `
+          <div class="text-xs text-zinc-400/80 bg-zinc-900/5 border border-white/10 p-4 space-y-2">
+            <p><i class="fa-solid fa-circle-exclamation mr-2"></i><strong>Mock Booking Engine:</strong></p>
+            <p>Stripe credentials are not set in the environment.</p>
+            <p>Click "Confirm Booking" to test the flow.</p>
+          </div>
+        `;
+        return;
+      }
+
+      elements = stripe.elements({ clientSecret });
+      paymentElement = elements.create('payment');
+      paymentElement.mount('#payment-element');
+    }
+
+    function closeCheckout() {
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Submit Payment
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const payButton = document.getElementById('pay-button');
+      const payText = document.getElementById('pay-text');
+      const spinner = document.getElementById('pay-spinner');
+      const errorMsg = document.getElementById('error-message');
+
+      payButton.disabled = true;
+      payText.textContent = 'Confirming Booking...';
+      spinner.classList.remove('hidden');
+      errorMsg.classList.add('hidden');
+      
+      const isMock = document.getElementById('payment-element').querySelector('.text-zinc-400\\/80') !== null;
+      if (isMock) {
+        setTimeout(() => {
+          payButton.disabled = false;
+          payText.textContent = 'Confirm Booking';
+          spinner.classList.add('hidden');
+          closeCheckout();
+          openSuccess();
+        }, 1500);
+        return;
+      }
+
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + '/booking-complete',
+        },
+        redirect: 'if_required'
+      });
+
+      if (error) {
+        errorMsg.textContent = error.message;
+        errorMsg.classList.remove('hidden');
+        payButton.disabled = false;
+        payText.textContent = 'Confirm Booking';
+        spinner.classList.add('hidden');
+      } else {
+        closeCheckout();
+        openSuccess();
+      }
+    });
+
+    function openSuccess() {
+      const modal = document.getElementById('success-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSuccess() {
+      const modal = document.getElementById('success-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  </script>
+</body>
+</html>

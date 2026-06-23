@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VERTEX — Intelligent Business Analytics</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+  
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="font-sans antialiased bg-slate-950 overflow-x-hidden relative">
+
+  <!-- Neon Glowing Background Orbs -->
+  <div class="glow-orb glow-indigo"></div>
+  <div class="glow-orb glow-purple"></div>
+
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-40 bg-slate-950/60 backdrop-blur-lg border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i class="fa-solid fa-chart-line text-white text-sm"></i>
+        </div>
+        <span class="font-bold text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">
+          VERTEX
+        </span>
+      </div>
+      
+      <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-400">
+        <a href="#features" class="hover:text-white transition-colors">Features</a>
+        <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+        <a href="#dashboard" class="hover:text-white transition-colors">Platform</a>
+      </div>
+      
+      <a href="#pricing" class="glass-btn text-xs tracking-wider uppercase py-2.5 px-6 font-semibold rounded-lg hover:shadow-indigo-500/10 transition-all">
+        Start Free
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex flex-col justify-center items-center pt-32 pb-16 px-6 relative z-10">
+    <div class="max-w-5xl mx-auto text-center space-y-8">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+        <span class="text-xs font-semibold text-indigo-300 tracking-wide uppercase">Next-Gen SaaS Platform</span>
+      </div>
+      
+      <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-none text-white max-w-4xl mx-auto">
+        Decentralized data <br>
+        <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          visualized in real-time.
+        </span>
+      </h1>
+      
+      <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+        Stop digging through reports. Connect your data sources, generate premium visual intelligence, and optimize conversions with zero friction.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+        <a href="#pricing" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold py-4 px-8 rounded-lg shadow-lg shadow-indigo-500/20 transition-all text-center">
+          Get Started
+        </a>
+        <a href="#dashboard" class="w-full sm:w-auto glass-card border border-white/10 hover:border-white/20 text-white font-semibold py-4 px-8 rounded-lg transition-all text-center flex items-center justify-center">
+          Watch Demo <i class="fa-solid fa-play ml-2 text-xs text-indigo-400"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Glassmorphic Dashboard Preview Container -->
+    <div id="dashboard" class="max-w-6xl mx-auto w-full mt-20 p-4 glass-card border border-white/10 rounded-2xl shadow-2xl relative">
+      <!-- Glow background -->
+      <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-purple-500/5 -z-10 rounded-2xl"></div>
+      
+      <!-- Fake Dashboard Header -->
+      <div class="flex flex-col sm:flex-row items-center justify-between border-b border-white/5 pb-4 mb-6 gap-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-3 h-3 rounded-full bg-red-500"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500"></div>
+          <span class="text-xs text-slate-500 font-mono pl-4">https://app.vertex.io/dashboard</span>
+        </div>
+        <div class="flex space-x-2">
+          <span class="text-xs bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 py-1 px-3 rounded-full">Live Stats</span>
+        </div>
+      </div>
+      
+      <!-- Dashboard Widgets Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Widget 1: Revenue -->
+        <div class="p-6 bg-white/5 border border-white/5 rounded-xl backdrop-blur-md space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">ARR Growth</span>
+            <i class="fa-solid fa-wallet text-indigo-400"></i>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-3xl font-bold text-white">$142,890</h3>
+            <p class="text-xs text-emerald-400"><i class="fa-solid fa-arrow-trend-up mr-1"></i> +24% from last quarter</p>
+          </div>
+        </div>
+        
+        <!-- Widget 2: active users -->
+        <div class="p-6 bg-white/5 border border-white/5 rounded-xl backdrop-blur-md space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Active Sessions</span>
+            <i class="fa-solid fa-users text-purple-400"></i>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-3xl font-bold text-white">4,821</h3>
+            <p class="text-xs text-emerald-400"><i class="fa-solid fa-arrow-trend-up mr-1"></i> +12% live now</p>
+          </div>
+        </div>
+
+        <!-- Widget 3: Conversion Rate -->
+        <div class="p-6 bg-white/5 border border-white/5 rounded-xl backdrop-blur-md space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Conversion Rate</span>
+            <i class="fa-solid fa-percent text-pink-400"></i>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-3xl font-bold text-white">3.48%</h3>
+            <p class="text-xs text-pink-400"><i class="fa-solid fa-arrow-trend-down mr-1"></i> -0.2% vs yesterday</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-24 border-t border-white/5 relative bg-slate-950/80 z-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-xl mx-auto mb-16 space-y-4">
+        <span class="text-indigo-400 text-xs tracking-widest uppercase font-semibold">Flexible Plans</span>
+        <h2 class="text-3xl md:text-5xl font-bold text-white">Upgrade Your Intelligence</h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mt-4"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- Pro Plan -->
+        <div class="p-8 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md flex flex-col justify-between relative hover:border-indigo-500/20 transition-all duration-300 group">
+          <div class="space-y-6">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xl font-bold text-white">Growth Plan</h3>
+              <span class="text-xs bg-indigo-500/20 text-indigo-300 py-1 px-3 rounded-full">Popular</span>
+            </div>
+            <div class="flex items-baseline">
+              <span class="text-4xl font-bold text-white">29.00</span>
+              <span class="text-slate-400 text-sm ml-2">BGN / month</span>
+            </div>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li><i class="fa-solid fa-check text-indigo-400 mr-2"></i> Up to 5 projects</li>
+              <li><i class="fa-solid fa-check text-indigo-400 mr-2"></i> Real-time dashboards</li>
+              <li><i class="fa-solid fa-check text-indigo-400 mr-2"></i> Stripe integration support</li>
+              <li><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 24/7 email support</li>
+            </ul>
+          </div>
+          <div class="pt-8">
+            <button onclick="checkoutPlan('Growth Plan', 29.00)" class="w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-lg border border-white/10 transition-colors">
+              Subscribe to Growth
+            </button>
+          </div>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="p-8 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md flex flex-col justify-between relative hover:border-purple-500/20 transition-all duration-300 group">
+          <div class="space-y-6">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xl font-bold text-white">Enterprise Plan</h3>
+              <span class="text-xs bg-purple-500/20 text-purple-300 py-1 px-3 rounded-full">Unlimited</span>
+            </div>
+            <div class="flex items-baseline">
+              <span class="text-4xl font-bold text-white">99.00</span>
+              <span class="text-slate-400 text-sm ml-2">BGN / month</span>
+            </div>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> Unlimited projects</li>
+              <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> Advanced custom metrics</li>
+              <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> Dedicated DB tunneling</li>
+              <li><i class="fa-solid fa-check text-purple-400 mr-2"></i> Priority phone & Slack support</li>
+            </ul>
+          </div>
+          <div class="pt-8">
+            <button onclick="checkoutPlan('Enterprise Plan', 99.00)" class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold py-3 rounded-lg shadow-lg shadow-indigo-500/10 transition-all">
+              Subscribe to Enterprise
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout Drawer Modal -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div onclick="closeCheckout()" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md"></div>
+    
+    <!-- Modal Card -->
+    <div class="relative w-full max-w-lg glass-card border border-white/15 p-8 rounded-2xl shadow-2xl z-10 max-h-[90vh] overflow-y-auto bg-slate-900/90">
+      <button onclick="closeCheckout()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      
+      <h3 class="text-2xl font-bold text-center text-white mb-1">Upgrade Subscription</h3>
+      <p id="selected-plan-name" class="text-xs text-indigo-400 text-center font-semibold uppercase tracking-wider mb-6">Plan Name</p>
+      
+      <!-- Amount container -->
+      <div class="mb-6 p-4 bg-white/5 border border-white/5 rounded-xl space-y-1">
+        <div class="flex justify-between items-baseline">
+          <span class="text-xs uppercase tracking-wider text-slate-400">Recurring Price</span>
+          <span id="modal-amount" class="text-white font-bold text-xl">0.00 BGN</span>
+        </div>
+      </div>
+      
+      <!-- Payment Form -->
+      <form id="payment-form" class="space-y-6">
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest text-slate-400 mb-2 font-bold">Secure Card Details</label>
+          <div id="payment-element" class="p-4 bg-slate-950/80 border border-white/10 rounded-xl">
+            <!-- Stripe Payment Element Mount -->
+          </div>
+        </div>
+        
+        <div id="error-message" class="text-red-400 text-xs font-light text-center hidden"></div>
+        
+        <button id="pay-button" type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold py-4 rounded-xl shadow-lg shadow-indigo-500/25 transition-all flex items-center justify-center">
+          <span id="pay-text">Confirm Subscription</span>
+          <div id="pay-spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md"></div>
+    <div class="relative w-full max-w-md glass-card border border-indigo-500/30 p-12 text-center z-10 bg-slate-900/90 rounded-2xl">
+      <div class="w-16 h-16 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-500/20">
+        <i class="fa-solid fa-check text-2xl text-white"></i>
+      </div>
+      <h3 class="text-3xl font-bold text-white mb-3">Subscription Activated</h3>
+      <p class="text-slate-400 text-sm font-light leading-relaxed mb-8">
+        Your subscription has been successfully created. Welcome to Vertex Pro! You now have unlimited access to all platform metrics.
+      </p>
+      <button onclick="closeSuccess()" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold py-4 px-12 rounded-xl transition-all shadow-lg shadow-indigo-500/20">
+        Go to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="py-16 border-t border-white/5 text-center text-xs tracking-wider uppercase text-slate-500 space-y-6 relative z-10 bg-slate-950/40">
+    <p>&copy; 2026 VERTEX. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let stripe, elements, paymentElement;
+    let selectedPlan = { name: '', amount: 0 };
+
+    async function checkoutPlan(planName, amount) {
+      selectedPlan = { name: planName, amount };
+      
+      document.getElementById('selected-plan-name').textContent = planName;
+      document.getElementById('modal-amount').textContent = `${amount.toFixed(2)} BGN`;
+
+      // Open Checkout Modal
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      // Initialize Stripe Elements
+      const resConfig = await fetch('/api/config');
+      const { publishableKey } = await resConfig.json();
+      
+      if (!stripe) {
+        stripe = Stripe(publishableKey);
+      }
+
+      const resIntent = await fetch('/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: amount, planName: planName })
+      });
+      const { clientSecret } = await resIntent.json();
+
+      if (clientSecret.startsWith('mock_')) {
+        // Stripe mock mode
+        document.getElementById('payment-element').innerHTML = `
+          <div class="text-xs text-indigo-400/80 bg-indigo-500/5 border border-indigo-500/10 p-4 space-y-2 rounded-lg">
+            <p><i class="fa-solid fa-circle-exclamation mr-2"></i><strong>Mock Stripe Engine:</strong></p>
+            <p>Stripe keys are not configured in your environment.</p>
+            <p>Click "Confirm Subscription" to test the flow.</p>
+          </div>
+        `;
+        return;
+      }
+
+      elements = stripe.elements({ clientSecret });
+      paymentElement = elements.create('payment');
+      paymentElement.mount('#payment-element');
+    }
+
+    function closeCheckout() {
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Submit Payment
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const payButton = document.getElementById('pay-button');
+      const payText = document.getElementById('pay-text');
+      const spinner = document.getElementById('pay-spinner');
+      const errorMsg = document.getElementById('error-message');
+
+      payButton.disabled = true;
+      payText.textContent = 'Activating Subscription...';
+      spinner.classList.remove('hidden');
+      errorMsg.classList.add('hidden');
+      
+      const isMock = document.getElementById('payment-element').querySelector('.text-indigo-400\\/80') !== null;
+      if (isMock) {
+        setTimeout(() => {
+          payButton.disabled = false;
+          payText.textContent = 'Confirm Subscription';
+          spinner.classList.add('hidden');
+          closeCheckout();
+          openSuccess();
+        }, 1500);
+        return;
+      }
+
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + '/subscription-complete',
+        },
+        redirect: 'if_required'
+      });
+
+      if (error) {
+        errorMsg.textContent = error.message;
+        errorMsg.classList.remove('hidden');
+        payButton.disabled = false;
+        payText.textContent = 'Confirm Subscription';
+        spinner.classList.add('hidden');
+      } else {
+        closeCheckout();
+        openSuccess();
+      }
+    });
+
+    function openSuccess() {
+      const modal = document.getElementById('success-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSuccess() {
+      const modal = document.getElementById('success-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  </script>
+</body>
+</html>

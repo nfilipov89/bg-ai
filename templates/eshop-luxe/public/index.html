@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-black text-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AETHERIS — Haute Horology & Luxury Goods</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            gold: {
+              100: '#F4E8C1',
+              400: '#E5C158',
+              500: '#D4AF37', // Bespoke Luxe Gold
+              600: '#B89326',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+  
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="font-sans antialiased bg-black overflow-x-hidden">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-40 bg-black/85 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="#" class="font-serif text-2xl tracking-widest text-white hover:text-gold-500 transition-colors">
+        AETHERIS
+      </a>
+      
+      <div class="hidden md:flex space-x-10 text-xs tracking-widest uppercase text-gray-400">
+        <a href="#collections" class="hover:text-white transition-colors">Collections</a>
+        <a href="#about" class="hover:text-white transition-colors">Heritage</a>
+        <a href="#contact" class="hover:text-white transition-colors">Atelier</a>
+      </div>
+      
+      <div class="flex items-center space-x-6">
+        <button onclick="toggleCart()" class="relative p-2 text-white hover:text-gold-500 transition-colors">
+          <i class="fa-solid fa-bag-shopping text-xl"></i>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-gold-500 text-black font-semibold text-[10px] w-4 h-4 rounded-full flex items-center justify-center scale-0 transition-transform duration-300">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center pt-20">
+    <div class="absolute inset-0 z-0 bg-radial-gradient"></div>
+    <div class="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 py-12">
+      <div class="lg:col-span-6 space-y-6">
+        <span class="text-gold-500 text-xs tracking-widest uppercase font-semibold">New Release</span>
+        <h1 class="font-serif text-5xl md:text-7xl leading-tight text-white">
+          Aetheris Gold <br><span class="italic font-light text-gray-300">Chronograph</span>
+        </h1>
+        <p class="text-gray-400 text-sm md:text-base max-w-lg font-light leading-relaxed">
+          The pinnacle of horological artistry. Crafted in solid 18k yellow gold, featuring our signature calibre movement, sapphire crystal backing, and hand-stitched alligator strap.
+        </p>
+        <div class="pt-4 flex items-center space-x-8">
+          <span class="font-serif text-2xl text-gold-100">2,499.00 BGN</span>
+          <button onclick="addToCart(1, 'Aetheris Gold Chronograph', 2499.00, 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=600&auto=format&fit=crop')" class="bg-gold-500 hover:bg-gold-600 text-black font-semibold text-xs tracking-widest uppercase py-4 px-8 rounded-none transition-all duration-300 transform hover:-translate-y-0.5">
+            Acquire Piece
+          </button>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-6 flex justify-center relative">
+        <div class="absolute w-80 h-80 bg-gold-500/10 rounded-full blur-3xl -z-10"></div>
+        <img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800&auto=format&fit=crop" alt="Luxe Watch" class="w-full max-w-md object-contain rounded-xl border border-white/10 shadow-2xl hover-scale">
+      </div>
+    </div>
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-500 text-xs tracking-widest uppercase animate-bounce cursor-pointer">
+      <a href="#collections">Explore Collection <i class="fa-solid fa-chevron-down ml-2"></i></a>
+    </div>
+  </section>
+
+  <!-- Collections Section -->
+  <section id="collections" class="py-24 border-t border-white/5 relative bg-zinc-950">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-xl mx-auto mb-16 space-y-4">
+        <span class="text-gold-500 text-xs tracking-widest uppercase">The Atelier Collection</span>
+        <h2 class="font-serif text-3xl md:text-5xl text-white">Curated Masterpieces</h2>
+        <div class="w-12 h-[1px] bg-gold-500 mx-auto mt-4"></div>
+      </div>
+      
+      <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- Products will be injected dynamically -->
+        <div class="animate-pulse bg-zinc-900 border border-white/5 h-96"></div>
+        <div class="animate-pulse bg-zinc-900 border border-white/5 h-96"></div>
+        <div class="animate-pulse bg-zinc-900 border border-white/5 h-96"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flyout Cart Drawer -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 invisible pointer-events-none transition-all duration-300">
+    <!-- Backdrop -->
+    <div onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-in-out pointer-events-auto" id="cart-backdrop"></div>
+    
+    <!-- Panel -->
+    <div class="absolute top-0 right-0 h-full w-full sm:w-[450px] bg-zinc-950 border-l border-white/10 shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto" id="cart-panel">
+      <!-- Header -->
+      <div class="p-6 border-b border-white/10 flex items-center justify-between">
+        <h3 class="font-serif text-xl tracking-wide">Your Acquisition</h3>
+        <button onclick="toggleCart()" class="text-gray-400 hover:text-white transition-colors">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+      
+      <!-- Items List -->
+      <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-6">
+        <p class="text-gray-500 text-center font-light py-12">No acquisitions selected.</p>
+      </div>
+      
+      <!-- Footer -->
+      <div class="p-6 border-t border-white/10 bg-black/50 space-y-4">
+        <div class="flex items-center justify-between text-sm tracking-wide">
+          <span class="text-gray-400 font-light">Subtotal</span>
+          <span id="cart-total" class="font-serif text-lg text-gold-100">0.00 BGN</span>
+        </div>
+        <button id="checkout-btn" onclick="openCheckout()" class="w-full bg-gold-500 hover:bg-gold-600 disabled:bg-zinc-800 disabled:text-gray-600 text-black font-semibold text-xs tracking-widest uppercase py-4 transition-colors duration-300">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div onclick="closeCheckout()" class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-lg bg-zinc-950 border border-white/15 p-8 rounded-none shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeCheckout()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      
+      <h3 class="font-serif text-2xl text-center tracking-wide mb-2">Secure Acquisition</h3>
+      <p class="text-xs text-gray-400 text-center uppercase tracking-widest mb-6">Payment powered by Stripe</p>
+      
+      <!-- Order Summary -->
+      <div class="mb-6 p-4 bg-zinc-900 border border-white/5 space-y-2">
+        <div class="flex justify-between text-xs uppercase tracking-wider text-gray-400">
+          <span>Acquisition total</span>
+          <span id="modal-total" class="text-gold-100 font-serif text-sm">0.00 BGN</span>
+        </div>
+      </div>
+      
+      <!-- Payment Form -->
+      <form id="payment-form" class="space-y-6">
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 font-semibold">Card Details</label>
+          <div id="payment-element" class="p-4 bg-zinc-900 border border-white/10 rounded-none">
+            <!-- Stripe Payment Element Mount -->
+          </div>
+        </div>
+        
+        <div id="error-message" class="text-red-500 text-xs font-light text-center hidden"></div>
+        
+        <button id="pay-button" type="submit" class="w-full bg-gold-500 hover:bg-gold-600 text-black font-semibold text-xs tracking-widest uppercase py-4 transition-colors duration-300 flex items-center justify-center">
+          <span id="pay-text">Confirm Payment</span>
+          <div id="pay-spinner" class="hidden w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin ml-2"></div>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+    <div class="relative w-full max-w-md bg-zinc-950 border border-gold-500/30 p-12 text-center z-10">
+      <div class="w-16 h-16 bg-gold-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+        <i class="fa-solid fa-check text-2xl text-gold-500"></i>
+      </div>
+      <h3 class="font-serif text-3xl text-white mb-3">Acquisition Complete</h3>
+      <p class="text-gray-400 text-sm font-light leading-relaxed mb-8">
+        Your payment has been successfully processed. An advisor will contact you shortly to arrange a personal delivery.
+      </p>
+      <button onclick="closeSuccess()" class="bg-gold-500 hover:bg-gold-600 text-black font-semibold text-xs tracking-widest uppercase py-4 px-12 transition-colors duration-300">
+        Return to Gallery
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact" class="py-16 border-t border-white/5 bg-zinc-950 text-center text-xs tracking-widest uppercase text-gray-500 space-y-6">
+    <p class="font-serif text-xl tracking-widest text-white lowercase italic font-light">AETHERIS</p>
+    <p>&copy; 2026 AETHERIS. All rights reserved.</p>
+  </footer>
+
+  <!-- Script logic -->
+  <script>
+    let cart = [];
+    let products = [];
+    let stripe, elements, paymentElement;
+
+    // Load products
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(data => {
+        products = data;
+        renderProducts();
+      });
+
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = products.map(p => `
+        <div class="group border border-white/5 bg-black p-6 flex flex-col justify-between transition-all duration-300 hover:border-gold-500/20">
+          <div class="relative overflow-hidden mb-6 aspect-square bg-zinc-950 flex items-center justify-center">
+            <img src="${p.image}" alt="${p.name}" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105">
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-serif text-lg text-white group-hover:text-gold-500 transition-colors">${p.name}</h3>
+            <p class="text-xs text-gray-400 font-light leading-relaxed h-12 overflow-hidden">${p.description}</p>
+            <div class="pt-4 flex items-center justify-between">
+              <span class="font-serif text-base text-gold-100">${p.price.toFixed(2)} BGN</span>
+              <button onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.image}')" class="text-xs font-semibold text-gold-500 hover:text-white transition-colors tracking-wider uppercase">
+                Acquire
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Cart Handlers
+    function toggleCart() {
+      const drawer = document.getElementById('cart-drawer');
+      const backdrop = document.getElementById('cart-backdrop');
+      const panel = document.getElementById('cart-panel');
+      
+      if (drawer.classList.contains('invisible')) {
+        drawer.classList.remove('invisible');
+        setTimeout(() => {
+          backdrop.classList.add('opacity-100');
+          panel.classList.remove('translate-x-full');
+        }, 50);
+      } else {
+        backdrop.classList.remove('opacity-100');
+        panel.classList.add('translate-x-full');
+        setTimeout(() => {
+          drawer.classList.add('invisible');
+        }, 300);
+      }
+    }
+
+    function addToCart(id, name, price, image) {
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ id, name, price, image, quantity: 1 });
+      }
+      updateCartUI();
+      
+      // Open cart drawer on adding item
+      const drawer = document.getElementById('cart-drawer');
+      if (drawer.classList.contains('invisible')) {
+        toggleCart();
+      }
+    }
+
+    function updateCartUI() {
+      const itemsContainer = document.getElementById('cart-items');
+      const totalContainer = document.getElementById('cart-total');
+      const countBadge = document.getElementById('cart-count');
+      const checkoutBtn = document.getElementById('checkout-btn');
+      
+      const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      if (totalCount > 0) {
+        countBadge.textContent = totalCount;
+        countBadge.classList.remove('scale-0');
+        checkoutBtn.disabled = false;
+      } else {
+        countBadge.classList.add('scale-0');
+        checkoutBtn.disabled = true;
+      }
+
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = `<p class="text-gray-500 text-center font-light py-12">No acquisitions selected.</p>`;
+        totalContainer.textContent = '0.00 BGN';
+        return;
+      }
+
+      itemsContainer.innerHTML = cart.map(item => `
+        <div class="flex items-center space-x-4 border-b border-white/5 pb-4">
+          <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover bg-zinc-900 border border-white/10">
+          <div class="flex-1">
+            <h4 class="font-serif text-sm">${item.name}</h4>
+            <p class="text-xs text-gold-500 font-serif mt-1">${item.price.toFixed(2)} BGN</p>
+            <div class="flex items-center space-x-3 mt-2 text-xs">
+              <button onclick="updateQty(${item.id}, -1)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-minus"></i></button>
+              <span class="text-white font-medium">${item.quantity}</span>
+              <button onclick="updateQty(${item.id}, 1)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+          <button onclick="removeItem(${item.id})" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      `).join('');
+
+      const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      totalContainer.textContent = `${total.toFixed(2)} BGN`;
+    }
+
+    function updateQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (item) {
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+          removeItem(id);
+        } else {
+          updateCartUI();
+        }
+      }
+    }
+
+    function removeItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      updateCartUI();
+    }
+
+    // Checkout Flow
+    async function openCheckout() {
+      // Close cart drawer
+      toggleCart();
+      
+      const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      document.getElementById('modal-total').textContent = `${total.toFixed(2)} BGN`;
+      
+      // Open Checkout Modal
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      // Initialize Stripe Elements
+      const resConfig = await fetch('/api/config');
+      const { publishableKey } = await resConfig.json();
+      
+      if (!stripe) {
+        stripe = Stripe(publishableKey);
+      }
+
+      const resIntent = await fetch('/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: total })
+      });
+      const { clientSecret } = await resIntent.json();
+
+      if (clientSecret.startsWith('mock_')) {
+        // Stripe not configured - mock element
+        document.getElementById('payment-element').innerHTML = `
+          <div class="text-xs text-amber-500/80 bg-amber-500/5 border border-amber-500/20 p-4 space-y-2">
+            <p><i class="fa-solid fa-circle-exclamation mr-2"></i><strong>Stripe Sandbox Mode (Mock keys detected):</strong></p>
+            <p>To use real Stripe transactions, add valid keys to your environment (.env).</p>
+            <p>Click "Confirm Payment" to simulate a successful payment.</p>
+          </div>
+        `;
+        return;
+      }
+
+      elements = stripe.elements({ clientSecret });
+      paymentElement = elements.create('payment');
+      paymentElement.mount('#payment-element');
+    }
+
+    function closeCheckout() {
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Submit Payment
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const payButton = document.getElementById('pay-button');
+      const payText = document.getElementById('pay-text');
+      const spinner = document.getElementById('pay-spinner');
+      const errorMsg = document.getElementById('error-message');
+
+      payButton.disabled = true;
+      payText.textContent = 'Processing Transaction...';
+      spinner.classList.remove('hidden');
+      errorMsg.classList.add('hidden');
+
+      const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      
+      // Check if sandbox mock mode
+      const isMock = document.getElementById('payment-element').querySelector('.text-amber-500\\/80') !== null;
+      if (isMock) {
+        setTimeout(() => {
+          payButton.disabled = false;
+          payText.textContent = 'Confirm Payment';
+          spinner.classList.add('hidden');
+          closeCheckout();
+          openSuccess();
+        }, 1500);
+        return;
+      }
+
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + '/checkout-complete',
+        },
+        redirect: 'if_required'
+      });
+
+      if (error) {
+        errorMsg.textContent = error.message;
+        errorMsg.classList.remove('hidden');
+        payButton.disabled = false;
+        payText.textContent = 'Confirm Payment';
+        spinner.classList.add('hidden');
+      } else {
+        closeCheckout();
+        openSuccess();
+      }
+    });
+
+    function openSuccess() {
+      // Clear cart
+      cart = [];
+      updateCartUI();
+      
+      const modal = document.getElementById('success-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSuccess() {
+      const modal = document.getElementById('success-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  </script>
+</body>
+</html>

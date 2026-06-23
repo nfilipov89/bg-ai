@@ -1,0 +1,65 @@
+/* Minimalist Creative Portfolio styling for Aurelia Vance */
+body {
+  background-color: #09090b; /* Zinc 950 */
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: 'Cinzel', serif;
+}
+
+/* Category Filter Buttons Active State */
+.gallery-filter-btn {
+  position: relative;
+  transition: color 0.3s ease;
+  padding-bottom: 4px;
+}
+
+.gallery-filter-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.gallery-filter-btn:hover::after, .gallery-filter-btn.active::after {
+  width: 100%;
+}
+
+/* Stripe element wrapper to match Minimalist Portfolio Zinc theme */
+.StripeElement {
+  background-color: #18181b !important; /* bg-zinc-900 */
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f4f4f5;
+}
+
+.StripeElement--focus {
+  border-color: #ffffff !important;
+}
+
+/* Smooth zoom-in transition for gallery */
+.group img {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
