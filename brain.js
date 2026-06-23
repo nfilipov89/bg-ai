@@ -5,7 +5,7 @@ require('dotenv').config();
 if (process.argv.includes('--mode=pm')) {
   const kanban = fs.readFileSync('docs/KANBAN.md', 'utf8');
   const todoMatch = kanban.match(/## To Do\n([\s\S]*?)\n##/);
-  const firstTask = todoMatch? todoMatch[1].split('\n').find(l => l.trim().startsWith('-')) : null;
+  const firstTask = todoMatch ? todoMatch[1].split('\n').find(l => l.trim().startsWith('-')) : null;
 
   if (!firstTask) {
     console.log('Няма задачи в To Do');
@@ -45,7 +45,7 @@ if (process.argv.includes('--mode=pm')) {
         }
         const planText = response.choices?.[0]?.message?.content || '';
         if (!planText) {
-          console.log('ГРЕШКА: Празен отговор от локалното API.');
+          console.log('ГРЕШКА: Локалното API не работи. Провери дали LM Studio е пуснато.');
           process.exit(1);
         }
         fs.writeFileSync('docs/PLAN.md', `# План за: ${task}\n\n${planText}`);
@@ -56,16 +56,22 @@ if (process.argv.includes('--mode=pm')) {
         console.log('PM: План записан в PLAN.md');
         process.exit(0);
       } catch (e) {
-        console.error('Failed to parse API response:', e.message);
-        console.error('Response body:', body);
+        console.log('ГРЕШКА: Локалното API не работи. Провери дали LM Studio е пуснато.');
         process.exit(1);
       }
     });
   });
+
   req.on('error', (e) => {
-    console.error('ГРЕШКА: Мрежов проблем с локалното API:', e.message);
+    console.log('ГРЕШКА: Локалното API не работи. Провери дали LM Studio е пуснато.');
     process.exit(1);
   });
+
+  // Set timeout of 10 seconds
+  req.setTimeout(10000, () => {
+    req.destroy();
+  });
+
   req.write(data);
   req.end();
 }
