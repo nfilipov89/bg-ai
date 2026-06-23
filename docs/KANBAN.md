@@ -1,12 +1,9 @@
 # KANBAN
 
 ## To Do
-
-- Направи dark mode за магазина
-- Създай шаблон blog-basic
+- Добави Stripe плащане в eshop-basic
 
 ## Doing
-- Добави Stripe плащане в eshop-basic
 
 ## Done
 - Настрой Vercel деплой
