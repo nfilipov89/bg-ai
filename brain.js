@@ -15,10 +15,18 @@ if (process.argv.includes('--mode=pm')) {
   const task = firstTask.replace('-', '').trim();
   console.log('PM: Взимам задача:', task);
 
+  let stripeDocs = '';
+  if (fs.existsSync('docs/STRIPE_DOCS.md')) {
+    stripeDocs = '\n\nКонтекст (документация за Stripe):\n' + fs.readFileSync('docs/STRIPE_DOCS.md', 'utf8');
+  }
+
   const http = require('http');
   const data = JSON.stringify({
     model: process.env.LLM_MODEL,
-    messages: [{role:'user', content: `Ти си CTO. Задача: "${task}". Дай точен технически план в 5 стъпки за Node.js проект.`}],
+    messages: [
+      {role: 'system', content: 'Ти си CTO. Днес е 2026, ползвай само Stripe PaymentIntents API, charges API е deprecated от 2019.'},
+      {role: 'user', content: `Задача: "${task}". Дай точен технически план в 5 стъпки за Node.js проект.${stripeDocs}`}
+    ],
     temperature: 0.2
   });
 
