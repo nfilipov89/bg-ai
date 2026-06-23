@@ -289,6 +289,50 @@ async function main() {
   console.log(answer);
 }
 
-if (mode === 'vision' || (!['create', 'process-orders', 'pm'].includes(mode))) {
+async function runDev() {
+  const planPath = path.join(__dirname, 'docs', 'PLAN.md');
+  if (!fs.existsSync(planPath)) {
+    console.log('ГРЕШКА: PLAN.md не съществува.');
+    process.exit(1);
+  }
+  const plan = fs.readFileSync(planPath, 'utf8');
+
+  let stripeDocs = '';
+  const stripeDocsPath = path.join(__dirname, 'docs', 'STRIPE_DOCS.md');
+  if (fs.existsSync(stripeDocsPath)) {
+    stripeDocs = '\n\nКонтекст (документация за Stripe):\n' + fs.readFileSync(stripeDocsPath, 'utf8');
+  }
+
+  const prompt = `Прочети плана от docs/PLAN.md и го имплементирай:\n\n${plan}${stripeDocs}`;
+
+  console.log('Изпращам към LM Studio (Dev режим)...');
+  
+  const model = process.env.LLM_DEV_MODEL || 'phi-4-mini-instruct';
+  
+  const res = await fetch('http://127.0.0.1:1234/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: model,
+      messages: [
+        { role: 'system', content: 'Ти си Senior Developer. Днес е 2026. Пиши модерен Node.js код с Stripe PaymentIntents API. Чети плана от PLAN.md и имплементирай точно стъпките.' },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.2
+    })
+  });
+  
+  const data = await res.json();
+  const reasoning = data.choices?.[0]?.message?.reasoning_content || '';
+  const content = data.choices?.[0]?.message?.content || '';
+  const answer = content.trim() ? content : reasoning;
+
+  console.log('\n=== ОТГОВОР ОТ DEV ===\n');
+  console.log(answer);
+}
+
+if (mode === 'dev') {
+  runDev().catch(console.error);
+} else if (mode === 'vision' || (!['create', 'process-orders', 'pm'].includes(mode))) {
   main().catch(console.error);
 }
