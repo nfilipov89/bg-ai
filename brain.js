@@ -70,13 +70,13 @@ if (process.argv.includes('--mode=pm')) {
     process.exit(1);
   });
 
-  // Set timeout of 5 minutes
-  req.setTimeout(300000, () => {
+  // Set timeout of 60 seconds
+  req.setTimeout(60000, () => {
     req.destroy();
   });
 
   req.write(data);
-  console.log('PM: Чакам LM Studio... (може да отнеме 2-5 минути за R1)');
+  console.log('PM: Чакам LM Studio...');
   req.end();
 }
 const { execSync } = require('child_process');
@@ -254,7 +254,7 @@ async function askLMStudio(prompt) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'deepseek-r1-0528-qwen3-8b',
+      model: process.env.LLM_MODEL || 'phi-4-mini-instruct',
       messages: [
         { role: 'system', content: 'Ти си AI мозък на проект bg-ai. Отговаряй кратко и ясно.' },
         { role: 'user', content: prompt }
