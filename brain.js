@@ -15,37 +15,37 @@ if (process.argv.includes('--mode=pm')) {
   const task = firstTask.replace('-', '').trim();
   console.log('PM: Взимам задача:', task);
 
-  const https = require('https');
+  const http = require('http');
   const data = JSON.stringify({
-    model: 'deepseek-chat',
-    messages: [{role:'user', content: `Ти си CTO. Задача: "${task}". Дай точен технически план в 5 стъпки за Node.js проект. Всяка стъпка на нов ред с номер.`}],
+    model: process.env.LLM_MODEL,
+    messages: [{role:'user', content: `Ти си CTO. Задача: "${task}". Дай точен технически план в 5 стъпки за Node.js проект.`}],
     temperature: 0.2
   });
 
   const options = {
-    hostname: 'api.deepseek.com',
+    hostname: '127.0.0.1',
+    port: 1234,
     path: '/v1/chat/completions',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + process.env.DEEPSEEK_API_KEY,
       'Content-Length': Buffer.byteLength(data)
     }
   };
 
-  const req = https.request(options, (res) => {
+  const req = http.request(options, (res) => {
     let body = '';
     res.on('data', (chunk) => body += chunk);
     res.on('end', () => {
       try {
         const response = JSON.parse(body);
         if (response.error) {
-          console.log('ГРЕШКА: DeepSeek API не работи. Провери баланса или ключа.');
+          console.log('ГРЕШКА: Локалното API не работи. Провери дали LM Studio е пуснато.');
           process.exit(1);
         }
         const planText = response.choices?.[0]?.message?.content || '';
         if (!planText) {
-          console.log('ГРЕШКА: Празен отговор от DeepSeek.');
+          console.log('ГРЕШКА: Празен отговор от локалното API.');
           process.exit(1);
         }
         fs.writeFileSync('docs/PLAN.md', `# План за: ${task}\n\n${planText}`);
@@ -56,14 +56,14 @@ if (process.argv.includes('--mode=pm')) {
         console.log('PM: План записан в PLAN.md');
         process.exit(0);
       } catch (e) {
-        console.error('Failed to parse DeepSeek response:', e.message);
+        console.error('Failed to parse API response:', e.message);
         console.error('Response body:', body);
         process.exit(1);
       }
     });
   });
   req.on('error', (e) => {
-    console.error('ГРЕШКА: Мрежов проблем с DeepSeek API:', e.message);
+    console.error('ГРЕШКА: Мрежов проблем с локалното API:', e.message);
     process.exit(1);
   });
   req.write(data);
