@@ -38,17 +38,20 @@ if (process.argv.includes('--mode=pm')) {
     res.on('data', (chunk) => body += chunk);
     res.on('end', () => {
       try {
-        const response = JSON.parse(body);
-        if (response.error) {
+        const data = JSON.parse(body);
+        if (data.error) {
           console.log('ГРЕШКА: Локалното API не работи. Провери дали LM Studio е пуснато.');
           process.exit(1);
         }
-        const planText = response.choices?.[0]?.message?.content || '';
-        if (!planText) {
+        const reasoning = data.choices[0].message.reasoning_content || '';
+        const content = data.choices[0].message.content || '';
+        const finalText = content.trim() ? content : reasoning;
+
+        if (!finalText) {
           console.log('ГРЕШКА: Локалното API не работи. Провери дали LM Studio е пуснато.');
           process.exit(1);
         }
-        fs.writeFileSync('docs/PLAN.md', `# План за: ${task}\n\n${planText}`);
+        fs.writeFileSync('docs/PLAN.md', `# План за: ${task}\n\n${finalText}`);
         
         // Премести в Doing
         const updated = kanban.replace(firstTask, '').replace('## Doing', `## Doing\n- ${task}`);
@@ -259,7 +262,9 @@ async function askLMStudio(prompt) {
     })
   });
   const data = await res.json();
-  return data.choices[0].message.content;
+  const reasoning = data.choices[0].message.reasoning_content || '';
+  const content = data.choices[0].message.content || '';
+  return content.trim() ? content : reasoning;
 }
 
 async function main() {
