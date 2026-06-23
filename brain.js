@@ -1,4 +1,5 @@
 const fs = require('fs');
+require('dotenv').config();
 
 // PM MODE
 if (process.argv.includes('--mode=pm')) {
@@ -14,19 +15,55 @@ if (process.argv.includes('--mode=pm')) {
   const task = firstTask.replace('-', '').trim();
   console.log('PM: Взимам задача:', task);
 
-  // Питай DeepSeek за план
-  const prompt = `Задача: ${task}\nДай план в 5 стъпки, всяка на нов ред с номер.`;
+  const https = require('https');
+  const data = JSON.stringify({
+    model: 'deepseek-chat',
+    messages: [{role:'user', content: `Ти си CTO. Задача: "${task}". Дай точен технически план в 5 стъпки за Node.js проект. Всяка стъпка на нов ред с номер.`}],
+    temperature: 0.2
+  });
 
-  // Използвай съществуващата AI функция от brain.js
-  // Запиши в docs/PLAN.md
-  fs.writeFileSync('docs/PLAN.md', `# План за: ${task}\n\n1. Анализирай изискванията\n2. Промени templates/eshop-basic\n3. Тествай локално\n4. Деплой в Vercel\n5. Провери production`);
+  const options = {
+    hostname: 'api.deepseek.com',
+    path: '/v1/chat/completions',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + process.env.DEEPSEEK_API_KEY,
+      'Content-Length': Buffer.byteLength(data)
+    }
+  };
 
-  // Премести в Doing
-  const updated = kanban.replace(firstTask, '').replace('## Doing', `## Doing\n- ${task}`);
-  fs.writeFileSync('docs/KANBAN.md', updated);
-
-  console.log('PM: План записан в PLAN.md');
-  process.exit(0);
+  const req = https.request(options, (res) => {
+    let body = '';
+    res.on('data', (chunk) => body += chunk);
+    res.on('end', () => {
+      try {
+        const response = JSON.parse(body);
+        if (response.error) {
+          console.error('DeepSeek API Error:', response.error.message);
+          process.exit(1);
+        }
+        const planText = response.choices?.[0]?.message?.content || '';
+        fs.writeFileSync('docs/PLAN.md', `# План за: ${task}\n\n${planText}`);
+        
+        // Премести в Doing
+        const updated = kanban.replace(firstTask, '').replace('## Doing', `## Doing\n- ${task}`);
+        fs.writeFileSync('docs/KANBAN.md', updated);
+        console.log('PM: План записан в PLAN.md');
+        process.exit(0);
+      } catch (e) {
+        console.error('Failed to parse DeepSeek response:', e.message);
+        console.error('Response body:', body);
+        process.exit(1);
+      }
+    });
+  });
+  req.on('error', (e) => {
+    console.error(e);
+    process.exit(1);
+  });
+  req.write(data);
+  req.end();
 }
 const { execSync } = require('child_process');
 const path = require('path');
@@ -228,6 +265,6 @@ async function main() {
   console.log(answer);
 }
 
-if (mode === 'vision' || !['create', 'process-orders'].includes(mode)) {
+if (mode === 'vision' || (!['create', 'process-orders', 'pm'].includes(mode))) {
   main().catch(console.error);
 }
