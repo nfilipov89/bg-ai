@@ -1,48 +1,24 @@
 # План за: Добави GET /status endpoint, който връща JSON с версия и uptime
 
-1. Създаване на файл под назив `server.js` (если не е съществуват)
-   - Изберете модулите: `const express = require('express');`
-   - Инициализирайте апстракцияally: `const app = express();`
+1. Създаване на мапа за статични ресурси (server.js)
+   - Използвайте модулата `express` за създаване на ново приложение.
+   - Добавете мапа `/status`, която отговаря на GET запити.
 
-2. Промените в `server.js`, за да включите middleware за timedate
-   - Добавяте следващата строчка по-късно в кода:
-     ```javascript
-     const { createLogger } = require('@nestjs/common');
-     const pinoHttp = require('pino-http);
-     app.use(pinoHttp());
-     ```
+2. Промените в файл `app.controller.js`
+   - Създадете метод под назив `getStatus()`.
+   - Методът дава JSON с ключовата стойност "version" и "uptime".
 
-3. Създаване на файл под назив `statusController.js` в кореновия каталог.
-   - Включете модулите: `const { getStatus } = require('./status.controller');`
-   - Добавяте следващата строчка по-късно в кода:
-     ```javascript
-     app.get('/status', getStatus);
-     ```
+3. Създаване на мапа за статични ресурси (statusRoutes.js)
+   - Използвайте `express.Router()` за създаване на нова мапа.
+   - Добавете пътевик към `/status` с асоциация му и методът `getStatus`.
 
-4. Създаване на файл под назив `status.controller.js` в кореновий каталог.
-   - Включете модулите: `const { Status } = require('./status.resolver');`
-   - Реализирайте методът `getStatus`:
-     ```javascript
-     module.exports.getStatus = (req, res) => {
-       const responseObj = {
-         version: '1.0',
-         uptime: process.uptime(),
-       };
-       res.status(200).json(responseObj);
-     };
-     ```
+4. Промените в файл `server.js`
+   - Имплементайте мапата `statusRoutes.js` в основната мапа.
 
-5. Създаване на файл под назив `status.resolver.js` в кореновий каталог.
-   - Включете модулите: `const { Status } = require('./status.resolver');`
-   - Реализирайте класът `Status`:
-     ```javascript
-     class Status {
-       get() {
-         return { version: '1.0', uptime: process.uptime() };
-       }
-     }
+5. Създаване на мапа за статични ресурси (healthCheck.js)
+   - Използвайте модулата `os` за достъп до информацията за uptime.
+   - В методът `getStatus()`, добавете стойност "uptime" от данните на os.
 
-     module.exports = { Status };
-     ```
-
-Следвайки тези стъпки, ще имате точен GET /status endpoint, който връща JSON с версия и uptime.
+6. Тестове
+   - Напишете тестове за мапа `/status` с помощта на модулите `mocha` и `chai`.
+   - Проверете, че пътевик отговаря на GET запити и отново получава JSON с ключови стойности "version" и "uptime".
