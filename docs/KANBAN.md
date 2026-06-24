@@ -3,10 +3,12 @@
 ## To Do
 
 
-## Doing
 
+## Doing
+- Тествай PM auto-commit
 
 ## Done
+
 - Настрой Vercel деплой
 - Добави Stripe плащане в eshop-basic
 - Създаден eshop-luxe premium темплейт
