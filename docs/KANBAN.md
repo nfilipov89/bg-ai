@@ -2,12 +2,9 @@
 
 ## To Do
 
-- Добави GET /status endpoint, който връща JSON с версия и uptime
 
 ## Doing
-- - Добави GET /status endpoint, който връща JSON с версия и uptime
-
-- Тествай PM auto-commit
+- Добави GET /status endpoint, който връща JSON с версия и uptime
 
 ## Done
 
@@ -16,3 +13,4 @@
 - Създаден eshop-luxe premium темплейт
 - Създаден saas-glass premium темплейт
 - Създаден site-portfolio premium темплейт
+- Тествай PM auto-commit

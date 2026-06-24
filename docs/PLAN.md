@@ -1,65 +1,72 @@
-# План за: - Добави GET /status endpoint, който връща JSON с версия и uptime
+# План за: Добави GET /status endpoint, който връща JSON с версия и uptime
 
-1. Създайте файл "server.js" (ново) за основната конфигурация на Node.js сервера.
-   - Включете модулите 'express' и 'os'.
-   - Инициализирайте модула 'express' с нова инстанция 'app'.
-
-2. Променете или добавете следния код в "server.js":
+1. Създайте файл под назив `routes/status.js` в папката `/routes`. Този файл ще дефинира маршрута за GET-запрос към `/status`.
 ```javascript
 const express = require('express');
-const app = express();
-const os = require('os');
+const router = express.Router();
 
-let versionInfo = {
-  version: '1.0.0', // Изменя по необходима версия на вашия софтуер
-  uptime: null
-};
-
-app.get('/status', (req, res) => {
-  const now = new Date();
-
-  versionInfo.uptime = os.uptime() / 1000; // Преобразувате в секунди
-
-  res.json(versionInfo);
+// Функция, която се изпълнява при достъпяне на /status
+router.get('/status', (req, res) => {
+  // Точки за обогатяване ще следват...
 });
+
+module.exports = router;
 ```
 
-3. Създайте файл "server.js" за логиката на старт и запазване.
+2. В главния файл (`app.js` или `server.js`) добавете новия маршрут към мрежопереносите.
 ```javascript
-// Въже 'app' от предходното изследване
-const PORT = process.env.PORT || 3000;
+const statusRoutes = require('./routes/status');
+app.use('/status', statusRoutes);
+```
 
-app.listen(PORT, () => {
- console.log(`Серверата е активирана на порт ${PORT}.`);
+3. Утвърдителят на вашата програма, за да включи модулът `express.version()` и обаче не управляйте му с него (поради проблеми с версията).
+```javascript
+const { version } = require('express');
+app.set('version', String(version()) + '-internal');
+```
+
+4. В файл `routes/status.js`, добавете логиката за версиониране и uptime.
+```javascript
+const express = require('express');
+const router = express.Router();
+
+// Функция, която се изпълнява при достъпване на /status
+router.get('/', (req, res) => {
+  const versionInfo = `Server Version: ${app.get('version')}`;
+  const uptime = calculateUptime(); // Реализирайте функциите за обчисление на uptime
+  
+  res.json({
+    status: 'success',
+    data: { 
+      version: app.get('version'),
+      uptime
+    },
+    message: ''
+  });
 });
+
+function calculateUptime() {
+  // Реализирайте логиката за изчисляване на uptime, например чрез файловия системен датаперечет или временно хранилище.
+}
+
+module.exports = router;
 ```
 
-4. Създайте файл "index.js" за запазване и управление на процеса.
+5. За обаче, тъй като у нас не е реализирана функция `calculateUptime()`, ще трябва да я реализирате в рамките на файл `routes/status.js`.
 ```javascript
-// Въже 'express' от предходното изследване
-require('dotenv').config();
-const app = require('./server');
+const { exec } = require('child_process');
 
-module.exports = app;
-```
-
-5. Изменете или създайте файл "package.json":
-- Добавете ключове за модули, зависимости и скрипти (если не са имали).
-- Създайте скрипт 'start' с следния код: `"start": "node index.js"`.
-```json
-{
-  "name": "bg-ai-project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "express": "^4.17.3",
-    "dotenv": "^10.0.0"
-  }
+function calculateUptime() {
+  return new Promise((resolve, reject) => {
+    exec('uptime -p', (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout.trim());
+      }
+    });
+  });
 }
 ```
 
-Следите за тези стъпки, а след това можете да запустите проекта с `npm start` и достойате /status на localhost:3000/status.
+Следвайки тези стъпки, ще имате точен технически план за създаване на GET /status endpoint в вашия Node.js проект. Не забравяйте да замените dummy код с реални логики и проверяте наличието на необходимите системни инструменти (например `uptime` за UNIX-подобна система).
