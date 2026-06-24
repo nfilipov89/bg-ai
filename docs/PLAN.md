@@ -1,24 +1,32 @@
-# План за: Добави GET /status endpoint, който връща JSON с версия и uptime
+# План за: Добави middleware за logging на всеки request с метод и URL
 
-1. Създаване на мапа за статични ресурси (server.js)
-   - Използвайте модулата `express` за създаване на ново приложение.
-   - Добавете мапа `/status`, която отговаря на GET запити.
+1. Създайте файл `loggingMiddleware.js` в директорията `/middlewares`
+   - Файл: `./middlewares/loggingMiddleware.js`
 
-2. Промените в файл `app.controller.js`
-   - Създадете метод под назив `getStatus()`.
-   - Методът дава JSON с ключовата стойност "version" и "uptime".
+2. Въвежнете middleware, което записва метаданните за метод и URL на всяка request:
+```javascript
+const loggingMiddleware = (req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} Request to: ${req.url}`);
+  next();
+};
 
-3. Създаване на мапа за статични ресурси (statusRoutes.js)
-   - Използвайте `express.Router()` за създаване на нова мапа.
-   - Добавете пътевик към `/status` с асоциация му и методът `getStatus`.
+module.exports = loggingMiddleware;
+```
 
-4. Промените в файл `server.js`
-   - Имплементайте мапата `statusRoutes.js` в основната мапа.
+3. Придобрийте middleware в вашия основен модул на Node.js (`app.js` или `server.js`)
+```javascript
+const express = require('express');
+const app = express();
+const loggingMiddleware = require('./middlewares/loggingMiddleware');
 
-5. Създаване на мапа за статични ресурси (healthCheck.js)
-   - Използвайте модулата `os` за достъп до информацията за uptime.
-   - В методът `getStatus()`, добавете стойност "uptime" от данните на os.
+app.use(loggingMiddleware);
+```
 
-6. Тестове
-   - Напишете тестове за мапа `/status` с помощта на модулите `mocha` и `chai`.
-   - Проверете, че пътевик отговаря на GET запити и отново получава JSON с ключови стойности "version" и "uptime".
+4. Утвърдете, че middleware е активно:
+- Нека сте уверени, че middleware е добавено с `app.use(loggingMiddleware);` в вашия основен модул.
+
+5. Запускте апликация на Node.js:
+```bash
+node app.js
+```
+С този план, всяка request ще бъде регистрирана с метаданните за метод и URL в консоли.
