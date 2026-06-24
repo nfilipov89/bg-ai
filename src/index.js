@@ -105,6 +105,15 @@ app.post('/ai/chat', async (req, res) => {
   }
 });
 
+// Мапа на статични ресурси за /status
+app.get('/status', (req, res) => {
+  res.json({
+    status: 'ok',
+    version: process.version,
+    uptime: os.uptime()
+  });
+});
+
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log('Server is running on port ' + PORT);
