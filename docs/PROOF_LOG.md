@@ -87,3 +87,17 @@ Test PASSED!
 
 Test PASSED!
 ```
+
+
+## [2026-06-24] ЕТАП QA – Добави GET /status endpoint, който връща JSON с версия и uptime
+- Задача: Добави GET /status endpoint, който връща JSON с версия и uptime
+- Резултат: ✅ PASSED
+- npm test output:
+```
+> bg-ai@1.0.0 test
+> node tests/test.js
+
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+Test server started on port 65339
+Test PASSED!
+```

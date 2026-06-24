@@ -4,9 +4,9 @@
 
 
 ## Doing
-- Добави GET /status endpoint, който връща JSON с версия и uptime
 
 ## Done
+- Добави GET /status endpoint, който връща JSON с версия и uptime
 
 - Настрой Vercel деплой
 - Добави Stripe плащане в eshop-basic
