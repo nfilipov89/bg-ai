@@ -2,9 +2,11 @@
 
 ## To Do
 
-
+- Добави GET /status endpoint, който връща JSON с версия и uptime
 
 ## Doing
+- - Добави GET /status endpoint, който връща JSON с версия и uptime
+
 - Тествай PM auto-commit
 
 ## Done

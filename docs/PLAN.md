@@ -1,10 +1,65 @@
-# План за: Тествай PM auto-commit
+# План за: - Добави GET /status endpoint, който връща JSON с версия и uptime
 
-1. **Setup Node.js Project**: Initialize a new project with `npm init`, install dependencies (`express body-parser stripe`), and set up your package.json.
-2. **Create Express Server**: Set up an express server, define routes for creating payment intents (POST `/create-payment-intent`) and handling webhooks (POST `/webhook`).
-3. **Implement Payment Intent Creation Endpoint**: Use the Stripe Node.js library to create a new `paymentIntent.create()` with desired amount in cents.
-4. **Mount Stripe Elements on Frontend**: Include Stripe's JavaScript SDK, initialize elements using client secret from your backend and mount them onto an HTML form for payment processing (e.g., button click).
-5. **Handle Webhook Events**: Parse raw request body (`express.raw`) to handle webhook events such as `payment_intent.succeeded` with the appropriate logic.
-6. **Test & Deploy**: Test endpoints locally, ensure successful creation of Payment Intents and handling webhooks correctly before deploying your application on a server or cloud platform.
+1. Създайте файл "server.js" (ново) за основната конфигурация на Node.js сервера.
+   - Включете модулите 'express' и 'os'.
+   - Инициализирайте модула 'express' с нова инстанция 'app'.
 
-Note that this is just an overview; you will need more detailed code for error-handling, security measures (like verifying webhook signatures), environment variables management (`dotenv` package) etc. Also remember to replace placeholder values like `pk_test_your_publishable_key`, and endpoint secrets with actual secret keys from your Stripe account before deploying the application in production mode.
+2. Променете или добавете следния код в "server.js":
+```javascript
+const express = require('express');
+const app = express();
+const os = require('os');
+
+let versionInfo = {
+  version: '1.0.0', // Изменя по необходима версия на вашия софтуер
+  uptime: null
+};
+
+app.get('/status', (req, res) => {
+  const now = new Date();
+
+  versionInfo.uptime = os.uptime() / 1000; // Преобразувате в секунди
+
+  res.json(versionInfo);
+});
+```
+
+3. Създайте файл "server.js" за логиката на старт и запазване.
+```javascript
+// Въже 'app' от предходното изследване
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+ console.log(`Серверата е активирана на порт ${PORT}.`);
+});
+```
+
+4. Създайте файл "index.js" за запазване и управление на процеса.
+```javascript
+// Въже 'express' от предходното изследване
+require('dotenv').config();
+const app = require('./server');
+
+module.exports = app;
+```
+
+5. Изменете или създайте файл "package.json":
+- Добавете ключове за модули, зависимости и скрипти (если не са имали).
+- Създайте скрипт 'start' с следния код: `"start": "node index.js"`.
+```json
+{
+  "name": "bg-ai-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "dotenv": "^10.0.0"
+  }
+}
+```
+
+Следите за тези стъпки, а след това можете да запустите проекта с `npm start` и достойате /status на localhost:3000/status.
