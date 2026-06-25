@@ -6,13 +6,14 @@
 > bg-ai@1.0.0 test
 > node tests/test.js
 
-C:\Users\Dari\Desktop\bg-ai\src\index.js:122
-});
-^
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+C:\Users\Dari\Desktop\bg-ai\src\index.js:124
+app.get('/version', versionController.getVersion);
+                    ^
 
-SyntaxError: Unexpected token '}'
-    at wrapSafe (node:internal/modules/cjs/loader:1762:18)
-    at Module._compile (node:internal/modules/cjs/loader:1803:20)
+ReferenceError: versionController is not defined
+    at Object.<anonymous> (C:\Users\Dari\Desktop\bg-ai\src\index.js:124:21)
+    at Module._compile (node:internal/modules/cjs/loader:1829:14)
     at Object..js (node:internal/modules/cjs/loader:1969:10)
     at Module.load (node:internal/modules/cjs/loader:1552:32)
     at Module._load (node:internal/modules/cjs/loader:1354:12)
@@ -28,17 +29,5 @@ Node.js v25.9.0
 
 ## Генериран код
 ```js
-app.use(express.json());
-
-// NEW CODE STARTS HERE
-
-
-});
-
-
-});
-
-
-
-# СЪЩЕСТВУВАЩИ ENDPOINTS в файл
+app.get('/version', versionController.getVersion);
 ```

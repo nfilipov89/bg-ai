@@ -121,6 +121,16 @@ app.post('/post-robot', (req, res) => {
   res.status(200).json({ success: true, receivedMessage: message });
 });
 
+app.get('/version', (req, res) => {
+  const packagePath = path.join(__dirname, '../../package.json');
+  try {
+    const packageData = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+    res.json({ version: packageData.version });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read package.json' });
+  }
+});
+
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log('Server is running on port ' + PORT);

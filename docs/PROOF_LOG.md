@@ -121,3 +121,9 @@ Test PASSED!
 Test server started on port 59937
 Test PASSED!
 ```
+
+
+## [2026-06-25] ПЪЛЕН ЦИКЪЛ – Добави middleware за logging на всеки request с метод и URL
+- Задача: Добави middleware за logging на всеки request с метод и URL
+- Опити: 2
+- Резултат: ✅ ЗАВЪРШЕН
