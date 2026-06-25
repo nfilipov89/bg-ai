@@ -1,41 +1,21 @@
-# План за: Добави middleware за logging на всеки request с метод и URL
+# План за: Добави GET /version endpoint, който връща package.json version
 
-1. Създайте файл `loggingMiddleware.js` в директорията `/middlewares`
-   - Файл: `./middlewares/loggingMiddleware.js`
+1. Създай нов файл `routes/version.js`:
+   - Въведи необходимите модули.
+   - Експортирай функция, която създава рута за GET /version.
 
-2. Въже middleware, който записва метаданните за метод и URL на request
-```javascript
-const loggingMiddleware = (req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-};
-```
-3. Привърнете middleware в вашия приложение Node.js
-```javascript
-// В файл: app.js или ваше основно приложение на Node.js
-const loggingMiddleware = require('./middlewares/loggingMiddleware');
-app.use(loggingMiddleware);
-```
-4. Определете директорията, къдя ще се състоят файловете за middleware (покажи единствено case)
-```javascript
-// В файл: app.js или ваше основно приложение на Node.js
-const path = require('path');
+2. Добави конфигурация в `app.js`:
+   - Импортирай и използвай файла `routes/version.js`.
+   - Добави рутата в Express приложението.
 
-app.use(express.static(path.join(__dirname, 'middlewares')));
-```
-5. Проверете работата си, изпращай request и осигурете, че middleware записва метаданните за метод и URL correctly
-```javascript
-// В файл: app.test.js или вашите тестове на Node.js
-const express = require('express');
-const app = express();
+3. Създай файл `controllers/versionController.js`:
+   - Експортирай функция, която чете версията от package.json.
+   - Връща я като JSON обект.
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+4. Промени файла `routes/version.js` за да използва контроллера:
+   - Импортирай контроллера.
+   - Създай рута и викай контроллера при GET /version.
 
-
-// Запускате тъкната в test case за проверка
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Приложението ми е слуша на порт ${PORT}`));
-```
-Следите тези стъпки и създайте middleware за логгирование request с метод и URL.
+5. Тествай API-то:
+   - Използвай инструмент като Postman или curl да изтестираш GET /version endpoint-a.
+   - Провери дали връща версията на проекта коректно.
