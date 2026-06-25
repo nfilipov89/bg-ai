@@ -4,9 +4,9 @@
 
 
 ## Doing
-- Добави GET /version endpoint, който връща package.json version
 
 ## Done
+- Добави GET /version endpoint, който връща package.json version
 - Добави middleware за logging на всеки request с метод и URL
 
 - Настрой Vercel деплой

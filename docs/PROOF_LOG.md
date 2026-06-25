@@ -127,3 +127,17 @@ Test PASSED!
 - Задача: Добави middleware за logging на всеки request с метод и URL
 - Опити: 2
 - Резултат: ✅ ЗАВЪРШЕН
+
+
+## [2026-06-25] ЕТАП QA – Добави GET /version endpoint, който връща package.json version
+- Задача: Добави GET /version endpoint, който връща package.json version
+- Резултат: ✅ PASSED
+- npm test output:
+```
+> bg-ai@1.0.0 test
+> node tests/test.js
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Test server started on port 52549
+Test PASSED!
+```
