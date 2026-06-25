@@ -107,3 +107,17 @@ Test PASSED!
 - Задача: Добави GET /status endpoint, който връща JSON с версия и uptime
 - Опити: 1
 - Резултат: ✅ ЗАВЪРШЕН
+
+
+## [2026-06-25] ЕТАП QA – Добави middleware за logging на всеки request с метод и URL
+- Задача: Добави middleware за logging на всеки request с метод и URL
+- Резултат: ✅ PASSED
+- npm test output:
+```
+> bg-ai@1.0.0 test
+> node tests/test.js
+
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+Test server started on port 59937
+Test PASSED!
+```
