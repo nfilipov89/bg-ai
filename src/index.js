@@ -114,6 +114,13 @@ app.get('/status', (req, res) => {
   });
 });
 
+// В файл: app.js или ваше основно приложение на Node.js
+app.post('/post-robot', (req, res) => {
+  // Допълнителна логика за вашата '/post-robot' endpoint може да бъде добавена тук.
+  console.log(`Robot мессенджър е получен: "${message}"`);
+  res.status(200).json({ success: true, receivedMessage: message });
+});
+
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log('Server is running on port ' + PORT);

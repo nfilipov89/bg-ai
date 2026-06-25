@@ -295,20 +295,57 @@ async function runDev() {
     newCode = lines.join('\n').trim();
   }
 
-  // ПОЧИСТИ кода: премахни require/module.exports, замени router с app
+  // ПОЧИСТИ кода: премахни всичко, което вече съществува
+  // 1. Премахни redeclarations и boilerplate
   newCode = newCode
     .split('\n')
-    .filter(l => !l.trim().startsWith('const express') &&
-                 !l.trim().startsWith('const router') &&
-                 !l.trim().startsWith('const {') &&
-                 !l.trim().startsWith('module.exports') &&
-                 !l.trim().match(/^require\s*\(/) &&
-                 !l.trim().match(/^const .* = require/))
+    .filter(l => {
+      const t = l.trim();
+      // Премахни redeclarations
+      if (t.startsWith('const app =')) return false;
+      if (t.startsWith('const express')) return false;
+      if (t.startsWith('const router')) return false;
+      if (t.startsWith('const {')) return false;
+      if (t.startsWith('module.exports')) return false;
+      if (t.match(/^require\s*\(/)) return false;
+      if (t.match(/^const .* = require/)) return false;
+      // Премахни app.listen
+      if (t.startsWith('app.listen(')) return false;
+      // Премахни bodyParser (не е дефиниран)
+      if (t.includes('bodyParser')) return false;
+      return true;
+    })
     .join('\n')
     .replace(/router\./g, 'app.')
     .trim();
 
-  // Валидация: трябва да има поне един HTTP method
+  // 2. Премахни endpoint блокове, които ВЕЧЕ съществуват в текущия файл
+  if (existingCode) {
+    // Намери всички съществуващи route paths
+    const existingRoutes = [];
+    const routeRegex = /app\.(get|post|put|delete)\s*\(\s*['"]([^'"]+)['"]/g;
+    let routeMatch;
+    while ((routeMatch = routeRegex.exec(existingCode)) !== null) {
+      existingRoutes.push(routeMatch[2]); // напр. '/', '/health', '/status'
+    }
+
+    // Премахни дупликатни endpoint блокове от новия код
+    for (const route of existingRoutes) {
+      // Премахни целия блок app.get('/route', ...) ... });
+      const escapedRoute = route.replace(/\//g, '\\/');
+      const blockRegex = new RegExp(
+        '(?:\\/\\/[^\\n]*\\n)*\\s*app\\.(?:get|post|put|delete)\\s*\\(\\s*[\'"]' + escapedRoute + '[\'"][\\s\\S]*?\\}\\);',
+        'g'
+      );
+      newCode = newCode.replace(blockRegex, '');
+    }
+    newCode = newCode.trim();
+  }
+
+  // 3. Премахни app.listen блокове (multi-line)
+  newCode = newCode.replace(/app\.listen\s*\([^)]*\)\s*(?:;|\s*(?:=>|{)[\s\S]*?\}\)?;?)/g, '').trim();
+
+  // Валидация: трябва да има поне един HTTP method или app.use
   const hasEndpoint = newCode.includes('.get(') || newCode.includes('.post(') || 
                       newCode.includes('.put(') || newCode.includes('.delete(') ||
                       newCode.includes('.use(');

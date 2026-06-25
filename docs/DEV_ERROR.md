@@ -6,11 +6,11 @@
 > bg-ai@1.0.0 test
 > node tests/test.js
 
-C:\Users\Dari\Desktop\bg-ai\src\index.js:11
-    'ЗАДЪЛЖИТЕЛЕН ФОРМАТ:  PLAN: {"task":"...","steps":["..."]} CODE: // JavaScript код за Express ПРАВИЛА: 1) Никога не обяснявай, винаги пиши код. 2) За /health върни точно: app.get("/health",(req,res)=>res.json({uptime:process.uptime()})); 3) Не използвате fetch към външни API-та.
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Dari\Desktop\bg-ai\src\index.js:122
+});
+^
 
-SyntaxError: Invalid or unexpected token
+SyntaxError: Unexpected token '}'
     at wrapSafe (node:internal/modules/cjs/loader:1762:18)
     at Module._compile (node:internal/modules/cjs/loader:1803:20)
     at Object..js (node:internal/modules/cjs/loader:1969:10)
@@ -24,4 +24,21 @@ SyntaxError: Invalid or unexpected token
 
 Node.js v25.9.0
 
+```
+
+## Генериран код
+```js
+app.use(express.json());
+
+// NEW CODE STARTS HERE
+
+
+});
+
+
+});
+
+
+
+# СЪЩЕСТВУВАЩИ ENDPOINTS в файл
 ```
